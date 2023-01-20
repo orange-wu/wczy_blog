@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @description: 用户账号实体类
@@ -20,11 +21,6 @@ import java.time.LocalDateTime;
 @TableName("tb_user_auth")
 @EqualsAndHashCode(callSuper = false)
 public class UserAuthEntity extends BaseEntity {
-
-    /**
-     * 用户信息id
-     */
-    private Long userInfoId;
 
     /**
      * 用户名
@@ -55,5 +51,40 @@ public class UserAuthEntity extends BaseEntity {
      * 最近登录时间
      */
     private LocalDateTime lastLoginTime;
+
+    /**
+     * 邮箱号
+     */
+    private String email;
+
+    /**
+     * 用户昵称
+     */
+    private String nickname;
+
+    /**
+     * 用户头像
+     */
+    private String avatar;
+
+    /**
+     * 用户简介
+     */
+    private String intro;
+
+    /**
+     * 个人网站
+     */
+    private String webSite;
+
+    /**
+     * 是否禁用
+     */
+    private Boolean disable;
+
+    /**
+     * 角色id列表
+     */
+    private List<Long> roleIds;
 
 }

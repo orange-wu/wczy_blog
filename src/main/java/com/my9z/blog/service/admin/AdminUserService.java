@@ -1,6 +1,7 @@
 package com.my9z.blog.service.admin;
 
 import com.my9z.blog.common.pojo.dto.LoginUserDTO;
+import com.my9z.blog.common.pojo.resq.UserInfoResp;
 
 /**
  * @description: admin后台用户相关操作service
@@ -13,7 +14,8 @@ public interface AdminUserService {
      * admin后台登陆
      *
      * @param loginUser 登陆信息dto
+     * @return 登陆成功的用户信息
      */
-    void login(LoginUserDTO loginUser);
+    UserInfoResp login(LoginUserDTO loginUser);
 
 }
