@@ -1,4 +1,4 @@
-package com.my9z.blog.common.entity;
+package com.my9z.blog.common.pojo;
 
 import com.my9z.blog.common.enums.StatusCodeEnum;
 import lombok.Data;
@@ -46,6 +46,10 @@ public class Result<T> {
 
     public static <T> Result<T> fail(T data) {
         return restResult(false, data, StatusCodeEnum.FAIL.getCode(), StatusCodeEnum.FAIL.getDesc());
+    }
+
+    public static <T> Result<T> fail(Integer code, String message) {
+        return restResult(false, null, code, message);
     }
 
     private static <T> Result<T> restResult(Boolean flag, T data, Integer code, String message) {

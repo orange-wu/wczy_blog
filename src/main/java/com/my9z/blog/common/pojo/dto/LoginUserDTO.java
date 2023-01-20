@@ -1,6 +1,8 @@
-package com.my9z.blog.common.entity.dto;
+package com.my9z.blog.common.pojo.dto;
 
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
 
 /**
  * @description: 登陆用户dto
@@ -11,13 +13,15 @@ import lombok.Data;
 public class LoginUserDTO {
 
     /**
-     * 用户吗
+     * 用户名
      */
+    @NotEmpty(message = "用户名不能为空")
     private String username;
 
     /**
      * 密码
      */
+    @NotEmpty(message = "密码不能为空")
     private String password;
 
 }

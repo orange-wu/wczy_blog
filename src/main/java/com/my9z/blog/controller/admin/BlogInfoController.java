@@ -1,6 +1,6 @@
 package com.my9z.blog.controller.admin;
 
-import com.my9z.blog.common.entity.Result;
+import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ public class BlogInfoController {
         String browserName = RequestUtil.getBrowserName(request);
         String operatingSystemName = RequestUtil.getOperatingSystemName(request);
         String ipSource = RequestUtil.getIpSource(ipAddress);
-        log.info("ipAddress:{},browserName:{},operatingSystemName:{},ipSource:{}",ipAddress,browserName,operatingSystemName,ipSource);
+        log.info("ipAddress:{},browserName:{},operatingSystemName:{},ipSource:{}", ipAddress, browserName, operatingSystemName, ipSource);
         return Result.ok();
     }
 

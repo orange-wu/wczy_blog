@@ -1,9 +1,10 @@
 package com.my9z.blog.controller.admin;
 
-import com.alibaba.fastjson.JSON;
-import com.my9z.blog.common.entity.Result;
-import com.my9z.blog.common.entity.dto.LoginUserDTO;
+import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.dto.LoginUserDTO;
+import com.my9z.blog.service.admin.AdminUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    @Autowired
+    private AdminUserService adminService;
+
     @PostMapping("/login")
-    public Result<?> login(LoginUserDTO loginUser){
-        log.info(JSON.toJSONString(loginUser));
+    public Result<?> login(LoginUserDTO loginUser) {
+        adminService.login(loginUser);
         return Result.ok();
     }
 
