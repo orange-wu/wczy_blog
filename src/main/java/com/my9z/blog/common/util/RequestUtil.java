@@ -1,9 +1,8 @@
-package com.my9z.blog.util;
+package com.my9z.blog.common.util;
 
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import eu.bitwalker.useragentutils.UserAgent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description: request解析工具类
@@ -104,12 +105,9 @@ public class RequestUtil {
                 result.append(line);
             }
             reader.close();
-            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(result));
-            JSONObject data = JSON.parseObject(jsonObject.get("data").toString());
-            return String.valueOf(data.get("location"));
-//            Map map = JSON.parseObject(result.toString(), Map.class);
-//            List<Map<String, String>> data = (List) map.get("data");
-//            return data.get(0).get("location");
+            Map map = JSON.parseObject(result.toString(), Map.class);
+            List<Map<String, String>> data = (List) map.get("data");
+            return data.get(0).get("location");
         } catch (Exception e) {
             return "";
         }

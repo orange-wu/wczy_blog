@@ -1,62 +1,147 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <groupId>root</groupId>
-   <version>1.0</version>
-   <artifactId>project</artifactId>
-   <packaging>pom</packaging>
-   <name>project</name>
-   <modules>
-      <module>projects</module>
-      <module>primary-source</module>
-      <module>servlets</module>
-      <module>ejbs</module>
-      <module>ear</module>
-      <module>site</module>
-   </modules>
+
+
+   <groupId>org.my9z</groupId>
+   <artifactId>wczy_blog</artifactId>
+   <version>1.0-SNAPSHOT</version>
+
+   <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>2.3.5.RELEASE</version>
+   </parent>
+
+
+   <properties>
+      <java.version>1.8</java.version>
+      <lombok.version>1.18.24</lombok.version>
+      <mysql.version>8.0.16</mysql.version>
+      <!-- es版本名称必须为elasticsearch.version，是因为覆盖springboot自带的es版本 -->
+      <elasticsearch.version>7.12.0</elasticsearch.version>
+      <fastjson.version>1.2.76</fastjson.version>
+      <mbp.version>3.4.0</mbp.version>
+      <hibernate.version>6.2.0.Final</hibernate.version>
+      <hutool.version>5.8.3</hutool.version>
+      <useragent.version>1.20</useragent.version>
+   </properties>
+
+
+   <dependencies>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-configuration-processor</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-data-redis</artifactId>
+      </dependency>
+<!--      <dependency>-->
+<!--         <groupId>org.springframework.boot</groupId>-->
+<!--         <artifactId>spring-boot-starter-security</artifactId>-->
+<!--      </dependency>-->
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-web</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-websocket</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-mail</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-aop</artifactId>
+      </dependency>
+      <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+      <dependency>
+         <groupId>cn.dev33</groupId>
+         <artifactId>sa-token-spring-boot-starter</artifactId>
+         <version>1.34.0</version>
+      </dependency>
+
+      <!-- Elasticsearch -->
+      <dependency>
+         <groupId>org.elasticsearch.client</groupId>
+         <artifactId>elasticsearch-rest-high-level-client</artifactId>
+         <version>${elasticsearch.version}</version>
+      </dependency>
+      <!-- mysql -->
+      <dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <version>${mysql.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+      <!-- swagger文档 -->
+<!--      <dependency>-->
+<!--         <groupId>io.springfox</groupId>-->
+<!--         <artifactId>springfox-boot-starter</artifactId>-->
+<!--         <version>3.0.0</version>-->
+<!--      </dependency>-->
+
+      <!-- 阿里云oss-->
+<!--      <dependency>-->
+<!--         <groupId>com.aliyun.oss</groupId>-->
+<!--         <artifactId>aliyun-sdk-oss</artifactId>-->
+<!--         <version>3.8.0</version>-->
+<!--      </dependency>-->
+      <!-- 阿里云cos-->
+<!--      <dependency>-->
+<!--         <groupId>com.qcloud</groupId>-->
+<!--         <artifactId>cos_api</artifactId>-->
+<!--         <version>5.6.75</version>-->
+<!--      </dependency>-->
+      <!--fastJson-->
+      <dependency>
+         <groupId>com.alibaba</groupId>
+         <artifactId>fastjson</artifactId>
+         <version>${fastjson.version}</version>
+      </dependency>
+      <!-- mybatis plus -->
+      <dependency>
+         <groupId>com.baomidou</groupId>
+         <artifactId>mybatis-plus-boot-starter</artifactId>
+         <version>${mbp.version}</version>
+      </dependency>
+      <!-- lombok -->
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <version>${lombok.version}</version>
+      </dependency>
+      <!-- hibernate数据库连接池 -->
+      <dependency>
+         <groupId>org.hibernate.validator</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+      <!-- hutool工具包 -->
+      <dependency>
+         <groupId>cn.hutool</groupId>
+         <artifactId>hutool-all</artifactId>
+         <version>${hutool.version}</version>
+      </dependency>
+      <!-- 浏览器解析工具 -->
+      <dependency>
+         <groupId>eu.bitwalker</groupId>
+         <artifactId>UserAgentUtils</artifactId>
+         <version>${useragent.version}</version>
+      </dependency>
+   </dependencies>
+
    <build>
-      <pluginManagement>
-         <plugins>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-site-plugin</artifactId>
-               <configuration>
-                  <unzipCommand>/usr/bin/unzip -o > err.txt</unzipCommand>
-               </configuration>
-            </plugin>
-         </plugins>
-      </pluginManagement>
+      <plugins>
+         <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+         </plugin>
+      </plugins>
    </build>
-   <dependencyManagement>
-      <dependencies>
-         <dependency>
-            <groupId>root.project.projects</groupId>
-            <artifactId>logging</artifactId>
-            <version>1.0</version>
-         </dependency>
-         <dependency>
-            <groupId>root.project</groupId>
-            <artifactId>primary-source</artifactId>
-            <version>1.0</version>
-         </dependency>
-         <dependency>
-            <groupId>root.project.servlets</groupId>
-            <artifactId>servlet</artifactId>
-            <version>1.0</version>
-            <type>war</type>
-         </dependency>
-         <dependency>
-            <groupId>root.project</groupId>
-            <artifactId>ejbs</artifactId>
-            <version>1.0</version>
-            <type>ejb</type>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
-   <distributionManagement>
-      <site>
-         <id>site</id>
-         <name>project website</name>
-         <url>scp://local.company.com/websites/project.company.com/</url>
-      </site>
-   </distributionManagement>
+
 </project>

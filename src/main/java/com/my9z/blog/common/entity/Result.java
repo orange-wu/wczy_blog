@@ -1,16 +1,12 @@
-package com.minzheng.blog.vo;
+package com.my9z.blog.common.entity;
 
-import com.minzheng.blog.enums.StatusCodeEnum;
+import com.my9z.blog.common.enums.StatusCodeEnum;
 import lombok.Data;
 
-
-import static com.minzheng.blog.enums.StatusCodeEnum.*;
-
 /**
- * 接口返回类
- *
- * @author yezhiqiu
- * @date 2021/08/10
+ * @description: 接口统一返回对象
+ * @author: wczy9
+ * @createTime: 2023-01-19  23:25
  */
 @Data
 public class Result<T> {
@@ -33,47 +29,23 @@ public class Result<T> {
     private T data;
 
     public static <T> Result<T> ok() {
-        return restResult(true, null, SUCCESS.getCode(), SUCCESS.getDesc());
+        return restResult(true, null, StatusCodeEnum.SUCCESS.getCode(), StatusCodeEnum.SUCCESS.getDesc());
     }
 
     public static <T> Result<T> ok(T data) {
-        return restResult(true, data, SUCCESS.getCode(), SUCCESS.getDesc());
-    }
-
-    public static <T> Result<T> ok(T data, String message) {
-        return restResult(true, data, SUCCESS.getCode(), message);
+        return restResult(true, data, StatusCodeEnum.SUCCESS.getCode(), StatusCodeEnum.SUCCESS.getDesc());
     }
 
     public static <T> Result<T> fail() {
-        return restResult(false, null, FAIL.getCode(), FAIL.getDesc());
+        return restResult(false, null, StatusCodeEnum.FAIL.getCode(), StatusCodeEnum.FAIL.getDesc());
     }
 
     public static <T> Result<T> fail(StatusCodeEnum statusCodeEnum) {
         return restResult(false, null, statusCodeEnum.getCode(), statusCodeEnum.getDesc());
     }
 
-    public static <T> Result<T> fail(String message) {
-        return restResult(false, message);
-    }
-
     public static <T> Result<T> fail(T data) {
-        return restResult(false, data, FAIL.getCode(), FAIL.getDesc());
-    }
-
-    public static <T> Result<T> fail(T data, String message) {
-        return restResult(false, data, FAIL.getCode(), message);
-    }
-
-    public static <T> Result<T> fail(Integer code, String message) {
-        return restResult(false, null, code, message);
-    }
-
-    private static <T> Result<T> restResult(Boolean flag, String message) {
-        Result<T> apiResult = new Result<>();
-        apiResult.setFlag(flag);
-        apiResult.setCode(flag ? SUCCESS.getCode() : FAIL.getCode());
-        apiResult.setMessage(message);
-        return apiResult;
+        return restResult(false, data, StatusCodeEnum.FAIL.getCode(), StatusCodeEnum.FAIL.getDesc());
     }
 
     private static <T> Result<T> restResult(Boolean flag, T data, Integer code, String message) {

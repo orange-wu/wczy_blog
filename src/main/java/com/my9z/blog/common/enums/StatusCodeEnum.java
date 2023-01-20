@@ -1,14 +1,13 @@
-package com.minzheng.blog.enums;
+package com.my9z.blog.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 接口状态码枚举
- *
- * @author yezhqiu
- * @date 2021/06/11
- **/
+ * @description: 接口返回状态码
+ * @author: wczy9
+ * @createTime: 2023-01-19  23:28
+ */
 @Getter
 @AllArgsConstructor
 public enum StatusCodeEnum {

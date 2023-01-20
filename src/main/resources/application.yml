@@ -1,6 +1,6 @@
 # 配置端口
 server:
-  port: 8080
+  port: 5003
   servlet:
     session:
       timeout: 21600
@@ -89,8 +89,8 @@ upload:
 #    bucketName: cos的bucketName
 
 # 网站前台域名（邮件通知用）
-website:
-  url: http://你的主域名或ip
+#website:
+#  url: http://你的主域名或ip
 
 #第三方配置信息
 #qq:
