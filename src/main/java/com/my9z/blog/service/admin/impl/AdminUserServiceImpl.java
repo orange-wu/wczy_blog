@@ -27,7 +27,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public UserInfoResp login(LoginUserDTO loginUser) {
-        // TODO: 2023/1/21 当前账号已登陆怎么办
         //根据用户名、密码查询用户账号
         UserAuthEntity userAuth = userAuthMapper.selectOne(new LambdaQueryWrapper<UserAuthEntity>()
                 .eq(UserAuthEntity::getUsername, loginUser.getUsername())
