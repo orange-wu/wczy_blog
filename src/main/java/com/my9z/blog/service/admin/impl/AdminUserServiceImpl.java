@@ -4,8 +4,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
-import com.my9z.blog.common.pojo.dto.LoginUserDTO;
-import com.my9z.blog.common.pojo.entity.user.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.LoginUserReq;
+import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.resq.UserInfoResp;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.admin.AdminUserService;
@@ -26,7 +26,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private UserAuthMapper userAuthMapper;
 
     @Override
-    public UserInfoResp login(LoginUserDTO loginUser) {
+    public UserInfoResp login(LoginUserReq loginUser) {
         //根据用户名、密码查询用户账号
         UserAuthEntity userAuth = userAuthMapper.selectOne(new LambdaQueryWrapper<UserAuthEntity>()
                 .eq(UserAuthEntity::getUsername, loginUser.getUsername())

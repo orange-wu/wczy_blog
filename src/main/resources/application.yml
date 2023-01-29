@@ -61,6 +61,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+  type-handlers-package: com.my9z.blog.config.mptypehandler
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:

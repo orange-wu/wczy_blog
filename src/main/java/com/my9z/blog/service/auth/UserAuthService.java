@@ -1,7 +1,7 @@
-package com.my9z.blog.service.user;
+package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.my9z.blog.common.pojo.entity.user.UserAuthEntity;
+import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 
 /**
  * @description: 用户账号service

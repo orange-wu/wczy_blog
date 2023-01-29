@@ -1,7 +1,7 @@
 package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
-import com.my9z.blog.common.pojo.dto.LoginUserDTO;
+import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.resq.UserInfoResp;
 import com.my9z.blog.service.admin.AdminUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class UserController {
     private AdminUserService adminService;
 
     @PostMapping("/login")
-    public Result<UserInfoResp> login(LoginUserDTO loginUser) {
+    public Result<UserInfoResp> login(LoginUserReq loginUser) {
         return Result.ok(adminService.login(loginUser));
     }
 

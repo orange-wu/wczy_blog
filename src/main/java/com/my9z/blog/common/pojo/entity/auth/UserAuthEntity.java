@@ -1,7 +1,9 @@
-package com.my9z.blog.common.pojo.entity.user;
+package com.my9z.blog.common.pojo.entity.auth;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.my9z.blog.common.pojo.entity.BaseEntity;
+import com.my9z.blog.config.mptypehandler.ListToJsonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -85,6 +87,7 @@ public class UserAuthEntity extends BaseEntity {
     /**
      * 角色id列表
      */
+    @TableField(typeHandler = ListToJsonTypeHandler.class)
     private List<Long> roleIds;
 
 }

@@ -4,7 +4,6 @@ package com.my9z.blog.config;
 import com.my9z.blog.common.enums.StatusCodeEnum;
 import com.my9z.blog.common.exception.BusinessException;
 import com.my9z.blog.common.pojo.Result;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author: wczy9
  * @createTime: 2023-01-20  15:09
  */
-@Log4j2
 @RestControllerAdvice
 public class ExceptionAdviceConfig {
 

@@ -1,9 +1,9 @@
-package com.my9z.blog.service.user.impl;
+package com.my9z.blog.service.auth.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.my9z.blog.common.pojo.entity.user.UserAuthEntity;
+import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.mapper.UserAuthMapper;
-import com.my9z.blog.service.user.UserAuthService;
+import com.my9z.blog.service.auth.UserAuthService;
 import org.springframework.stereotype.Service;
 
 /**
