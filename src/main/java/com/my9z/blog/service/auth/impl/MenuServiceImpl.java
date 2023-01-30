@@ -3,6 +3,7 @@ package com.my9z.blog.service.auth.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
@@ -41,10 +42,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         //1、拿到登陆用户的角色信息 没有登陆的话sa-token直接报错
         Long userId = UserUtil.getLoginId();
         UserAuthEntity userAuth = userAuthMapper.selectById(userId);
-        if (userAuth == null || CollUtil.isEmpty(userAuth.getRoleIds())) return null;// TODO: 2023/1/24 用户信息异常
+        //没有找到登录用户的对应信息 || 该用户没有被分配任何角色
+        if (userAuth == null || CollUtil.isEmpty(userAuth.getRoleIds()))
+            throw ErrorCodeEnum.USER_INFO_IS_ABNORMAL.buildException();
         List<Long> roleIds = userAuth.getRoleIds();
-        //该用户没有任何角色
-        if (CollUtil.isEmpty(roleIds)) return null;
         //2、拿到对应角色拥有的目录权限id
         List<RoleEntity> roles = roleMapper.selectBatchIds(roleIds);
         Set<Long> menuIds = roles.stream()

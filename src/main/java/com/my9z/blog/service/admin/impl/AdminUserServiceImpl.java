@@ -53,7 +53,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         userInfoResp.setAvatar(userAuth.getAvatar());
         userInfoResp.setIntro(userAuth.getIntro());
         userInfoResp.setWebSite(userAuth.getWebSite());
-        userInfoResp.setRoleIds(userAuth.getRoleIds());
         return userInfoResp;
     }
 }

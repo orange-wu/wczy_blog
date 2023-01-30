@@ -18,11 +18,6 @@ public class UserInfoResp {
     private String token;
 
     /**
-     * 角色id集合
-     */
-    private List<Long> roleIds;
-
-    /**
      * 用户昵称
      */
     private String nickname;
