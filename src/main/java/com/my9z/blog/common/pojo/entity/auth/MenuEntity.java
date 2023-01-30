@@ -50,12 +50,12 @@ public class MenuEntity extends BaseEntity {
     /**
      * 父id
      */
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 是否隐藏
      */
-    private Integer isHidden;
+    private Boolean hidden;
 
 }
 

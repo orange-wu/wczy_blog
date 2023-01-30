@@ -4,8 +4,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
-import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.resq.UserInfoResp;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.admin.AdminUserService;
@@ -36,7 +36,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         //对应账号被禁用
         if (userAuth.getDisable()) throw ErrorCodeEnum.USER_IS_DISABLE.buildException();
         //sa-token登陆通过cookie返回前端token
-        StpUtil.login(userAuth.getUsername());
+        StpUtil.login(userAuth.getId());
         //如果sa-token返回没有登陆则抛出登陆异常
         if (!StpUtil.isLogin()) throw ErrorCodeEnum.LOGIN_SA_TOKEN_ERROR.buildException();
         //组装返回信息

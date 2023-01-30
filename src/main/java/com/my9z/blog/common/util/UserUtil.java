@@ -15,7 +15,7 @@ public class UserUtil {
      * @return 当前登陆用户的id
      */
     public static Long getLoginId() {
-        return (Long) StpUtil.getLoginId();
+        return StpUtil.getLoginIdAsLong();
     }
 
 }

@@ -2,7 +2,12 @@ package com.my9z.blog;
 
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
+import com.my9z.blog.common.pojo.req.LoginUserReq;
+import com.my9z.blog.common.pojo.resq.UserInfoResp;
+import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.mapper.RoleMapper;
+import com.my9z.blog.service.admin.AdminUserService;
+import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -12,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @description: 测试类
@@ -23,24 +29,21 @@ import javax.annotation.Resource;
 @Slf4j
 public class SpringTest {
 
-    @Resource
-    private RoleMapper roleMapper;
+    @Autowired
+    private AdminUserService adminUserService;
 
     @Autowired
-    private RoleService roleService;
+    private MenuService menuService;
 
     @Test
-    public void roleIdMenuList(){
-
-        RoleEntity roleEntity = roleService.getById(1619701068390735874L);
-        log.info("sss:{}", JSON.toJSONString(roleEntity));
-
-//        RoleEntity roleDto = new RoleEntity();
-//        roleDto.setRoleName("aaa");
-//        roleDto.setRoleLabel("aaa");
-//        roleDto.setDisable(true);
-//        roleDto.setMenuIds(Lists.list(1L,2L));
-//        roleMapper.insert(roleDto);
+    public void userMenuTest(){
+        LoginUserReq loginUserReq = new LoginUserReq();
+        loginUserReq.setUsername("admin@qq.com");
+        loginUserReq.setPassword("123456");
+        UserInfoResp login = adminUserService.login(loginUserReq);
+        log.info("login userinfo:{}",JSON.toJSONString(login));
+        List<UserMenuResp> userMenuResp = menuService.listUserMenus();
+        log.info("login menuList:{}",JSON.toJSONString(userMenuResp));
     }
 
 }

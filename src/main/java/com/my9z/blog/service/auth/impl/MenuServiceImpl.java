@@ -1,5 +1,6 @@
 package com.my9z.blog.service.auth.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
@@ -14,7 +15,10 @@ import com.my9z.blog.service.auth.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,10 +38,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
     @Override
     public List<UserMenuResp> listUserMenus() {
-        //1、拿到登陆用户的角色信息
+        //1、拿到登陆用户的角色信息 没有登陆的话sa-token直接报错
         Long userId = UserUtil.getLoginId();
-        //没有登陆
-        if (userId == null) return null;
         UserAuthEntity userAuth = userAuthMapper.selectById(userId);
         if (userAuth == null || CollUtil.isEmpty(userAuth.getRoleIds())) return null;// TODO: 2023/1/24 用户信息异常
         List<Long> roleIds = userAuth.getRoleIds();
@@ -51,8 +53,41 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         //用户对应的角色没有任何权限
         if (CollUtil.isEmpty(menuIds)) return null;
         //3、根据目录id封装返回结果
+        return getUserMenuResp(menuIds);
+    }
+
+    /**
+     * 组装菜单父子集关系
+     *
+     * @param menuIds 菜单id集合
+     * @return 父子关系的菜单集合
+     */
+    private List<UserMenuResp> getUserMenuResp(Set<Long> menuIds) {
         List<MenuEntity> menus = baseMapper.selectBatchIds(menuIds);
-        // TODO: 2023/1/29 父子级递归返回
-        return null;
+        //父级菜单id为key,菜单子集为value
+        Map<Long, List<MenuEntity>> childrenMap = menus.stream()
+                .filter(menu -> menu.getParentId() != null)
+                .collect(Collectors.groupingBy(MenuEntity::getParentId));
+        //父级菜单集合
+        List<MenuEntity> parentMenuList = menus.stream()
+                .filter(menu -> menu.getParentId() == null)
+                .sorted(Comparator.comparing(MenuEntity::getOrderNum))
+                .collect(Collectors.toList());
+        //菜单处理
+        List<UserMenuResp> resp = new ArrayList<>();
+        parentMenuList.forEach(parent -> {
+            UserMenuResp userMenuResp = BeanUtil.copyProperties(parent, UserMenuResp.class);
+            if (childrenMap.containsKey(parent.getId())) {
+                //设置子菜单
+                List<MenuEntity> children = childrenMap.get(parent.getId());
+                List<UserMenuResp> collect = children.stream()
+                        .sorted(Comparator.comparing(MenuEntity::getOrderNum))
+                        .map(menu -> BeanUtil.copyProperties(menu, UserMenuResp.class))
+                        .collect(Collectors.toList());
+                userMenuResp.setChildren(collect);
+            }
+            resp.add(userMenuResp);
+        });
+        return resp;
     }
 }
