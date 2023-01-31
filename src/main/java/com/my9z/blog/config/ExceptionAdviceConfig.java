@@ -1,6 +1,7 @@
 package com.my9z.blog.config;
 
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.my9z.blog.common.enums.StatusCodeEnum;
 import com.my9z.blog.common.exception.BusinessException;
 import com.my9z.blog.common.pojo.Result;
@@ -25,6 +26,17 @@ public class ExceptionAdviceConfig {
     @ExceptionHandler(value = BusinessException.class)
     public Result<?> errorHandler(BusinessException e) {
         return Result.fail(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 处理服务异常
+     *
+     * @param e 异常
+     * @return 接口异常信息
+     */
+    @ExceptionHandler(value = NotLoginException.class)
+    public Result<?> errorHandler(NotLoginException e) {
+        return Result.fail(StatusCodeEnum.NO_LOGIN);
     }
 
     /**
