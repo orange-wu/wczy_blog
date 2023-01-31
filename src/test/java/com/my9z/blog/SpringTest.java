@@ -3,6 +3,7 @@ package com.my9z.blog;
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
+import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserInfoResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.mapper.RoleMapper;
@@ -44,6 +45,12 @@ public class SpringTest {
         log.info("login userinfo:{}",JSON.toJSONString(login));
         List<UserMenuResp> userMenuResp = menuService.listUserMenus();
         log.info("login menuList:{}",JSON.toJSONString(userMenuResp));
+    }
+
+    @Test
+    public void userTest(){
+        List<MenuResp> menuResp = menuService.listMenus("");
+        log.info("menuResp:{}",JSON.toJSONString(menuResp));
     }
 
 }

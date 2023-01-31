@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
+import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 
 import java.util.List;
@@ -20,4 +21,11 @@ public interface MenuService extends IService<MenuEntity> {
      */
     List<UserMenuResp> listUserMenus();
 
+    /**
+     * 根据菜单名查询菜单列表
+     *
+     * @param menuName 菜单名
+     * @return 菜单列表
+     */
+    List<MenuResp> listMenus(String menuName);
 }

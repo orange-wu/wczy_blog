@@ -2,11 +2,14 @@ package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.MenuMapper;
@@ -55,6 +58,39 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         if (CollUtil.isEmpty(menuIds)) return null;
         //3、根据目录id封装返回结果
         return getUserMenuResp(menuIds);
+    }
+
+    @Override
+    public List<MenuResp> listMenus(String menuName) {
+        //查询菜单数据
+        List<MenuEntity> menuEntityList = baseMapper.selectList(new LambdaQueryWrapper<MenuEntity>()
+                .like(StrUtil.isNotEmpty(menuName), MenuEntity::getName, menuName));
+        if (CollUtil.isEmpty(menuEntityList)) return null;
+        //父级菜单集合
+        List<MenuEntity> parentMenuList = menuEntityList.stream()
+                .filter(menu -> menu.getParentId() == null)
+                .collect(Collectors.toList());
+        //父级菜单id为key,菜单子集为value
+        Map<Long, List<MenuEntity>> childrenMap = menuEntityList.stream()
+                .filter(menu -> menu.getParentId() != null)
+                .collect(Collectors.groupingBy(MenuEntity::getParentId));
+        //组装目录菜单数据
+        return parentMenuList.stream().map(item -> {
+                    //一级菜单
+                    MenuResp menuResp = BeanUtil.copyProperties(item, MenuResp.class);
+                    //二级菜单
+                    List<MenuEntity> childrenMenuList = childrenMap.get(item.getId());
+                    if (CollUtil.isNotEmpty(childrenMenuList)) {
+                        List<MenuResp> childrenMenuRespList = BeanUtil.copyToList(childrenMenuList, MenuResp.class);
+                        //二级菜单排序
+                        childrenMenuRespList = childrenMenuRespList.stream()
+                                .sorted(Comparator.comparing(MenuResp::getOrderNum))
+                                .collect(Collectors.toList());
+                        menuResp.setChildren(childrenMenuRespList);
+                    }
+                    return menuResp;
+                }).sorted(Comparator.comparing(MenuResp::getOrderNum)) //一级菜单排序
+                .collect(Collectors.toList());
     }
 
     /**
