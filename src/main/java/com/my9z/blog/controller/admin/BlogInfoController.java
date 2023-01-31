@@ -27,6 +27,7 @@ public class BlogInfoController {
         String browserName = RequestUtil.getBrowserName(request);
         String operatingSystemName = RequestUtil.getOperatingSystemName(request);
         String ipSource = RequestUtil.getIpSource(ipAddress);
+        // TODO: 2023/1/31 访问量统计，用户区域统计等
         log.info("ipAddress:{},browserName:{},operatingSystemName:{},ipSource:{}", ipAddress, browserName, operatingSystemName, ipSource);
         return Result.ok();
     }
