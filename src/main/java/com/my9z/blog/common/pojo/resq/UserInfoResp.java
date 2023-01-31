@@ -13,9 +13,9 @@ import java.util.List;
 public class UserInfoResp {
 
     /**
-     * sa-token
+     * 用户信息id
      */
-    private String token;
+    private Long userInfoId;
 
     /**
      * 用户昵称
@@ -36,5 +36,10 @@ public class UserInfoResp {
      * 个人网站
      */
     private String webSite;
+
+    /**
+     * 用户角色id
+     */
+    private List<Long> roleList;
 
 }

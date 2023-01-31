@@ -47,12 +47,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private static UserInfoResp concatResp(UserAuthEntity userAuth) {
         UserInfoResp userInfoResp = new UserInfoResp();
-        String tokenValue = StpUtil.getTokenInfo().tokenValue;
-        userInfoResp.setToken(tokenValue);
+        userInfoResp.setUserInfoId(userAuth.getId());
         userInfoResp.setNickname(userAuth.getNickname());
         userInfoResp.setAvatar(userAuth.getAvatar());
         userInfoResp.setIntro(userAuth.getIntro());
         userInfoResp.setWebSite(userAuth.getWebSite());
+        userInfoResp.setRoleList(userAuth.getRoleIds());
         return userInfoResp;
     }
 }
