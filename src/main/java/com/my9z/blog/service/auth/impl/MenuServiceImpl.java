@@ -77,8 +77,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         //菜单处理
         List<UserMenuResp> resp = new ArrayList<>();
         parentMenuList.forEach(parent -> {
-            UserMenuResp userMenuResp = BeanUtil.copyProperties(parent, UserMenuResp.class);
+            UserMenuResp userMenuResp;
             if (childrenMap.containsKey(parent.getId())) {
+                userMenuResp = BeanUtil.copyProperties(parent, UserMenuResp.class);
                 //设置子菜单
                 List<MenuEntity> children = childrenMap.get(parent.getId());
                 List<UserMenuResp> collect = children.stream()
@@ -86,6 +87,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
                         .map(menu -> BeanUtil.copyProperties(menu, UserMenuResp.class))
                         .collect(Collectors.toList());
                 userMenuResp.setChildren(collect);
+            } else {
+                //只有一级菜单时，生成一个子菜单，目的是为了让前端vue更方便的渲染路由
+                userMenuResp = new UserMenuResp();
+                userMenuResp.setPath(parent.getPath());
+                userMenuResp.setComponent("Layout");
+                userMenuResp.setHidden(parent.getHidden());
+                List<UserMenuResp> children = CollUtil.list(false, UserMenuResp.builder()
+                        .path("").name(parent.getName()).icon(parent.getIcon()).component(parent.getComponent())
+                        .build());
+                userMenuResp.setChildren(children);
             }
             resp.add(userMenuResp);
         });

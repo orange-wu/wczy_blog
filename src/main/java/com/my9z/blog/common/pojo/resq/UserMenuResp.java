@@ -1,6 +1,9 @@
 package com.my9z.blog.common.pojo.resq;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,6 +13,9 @@ import java.util.List;
  * @createTime: 2023-01-21  19:08
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserMenuResp {
 
     /**
