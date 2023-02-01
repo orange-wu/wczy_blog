@@ -1,6 +1,5 @@
 package com.my9z.blog.common.enums;
 
-import cn.hutool.core.util.StrUtil;
 import com.my9z.blog.common.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,22 +17,14 @@ public enum ErrorCodeEnum {
     LOGIN_SA_TOKEN_ERROR(1001, "登陆失败"),
     USER_IS_DISABLE(1002, "账号已经被禁用"),
     USER_INFO_IS_ABNORMAL(1003, "当前用户信息异常"),
-
-    /***** 菜单相关 *****/
-    MENU_IS_USED_BY_ROLE(2000, "当前菜单被用户:{}关联");
+    ;
 
     private final Integer code;
 
     private final String msg;
 
-    /**
-     * 构建业务异常
-     *
-     * @param info 补充信息 配合枚举中msg使用，需要使用到info时，msg要有对应数目的"{}"
-     * @return BusinessException 业务异常
-     */
-    public BusinessException buildException(Object... info) {
-        return new BusinessException(this.code, StrUtil.format(this.msg, info));
+    public BusinessException buildException() {
+        return new BusinessException(this.code, this.msg);
     }
 
 }

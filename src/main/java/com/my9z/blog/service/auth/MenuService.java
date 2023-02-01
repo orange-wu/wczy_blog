@@ -28,12 +28,4 @@ public interface MenuService extends IService<MenuEntity> {
      * @return 菜单列表
      */
     List<MenuResp> listMenus(String menuName);
-
-    /**
-     * 通过菜单id删除对应菜单，如果有子菜单则一并删除
-     * 如果有对应的角色拥有该菜单的权限，则会报错提示
-     *
-     * @param menuId 菜单id
-     */
-    void deleteMenuById(Long menuId);
 }
