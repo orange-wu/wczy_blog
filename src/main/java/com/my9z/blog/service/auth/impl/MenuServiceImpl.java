@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -91,6 +92,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
                     return menuResp;
                 }).sorted(Comparator.comparing(MenuResp::getOrderNum)) //一级菜单排序
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteMenuById(Long menuId) {
+        //查询该菜单是否有角色关联
+        List<RoleEntity> roleEntityList = roleMapper.selectCountMenuId(menuId);
+        if (CollUtil.isNotEmpty(roleEntityList)) {
+            //当前菜单存在角色关联，不允许删除
+            String roleName = roleEntityList.stream()
+                    .map(RoleEntity::getRoleName)
+                    .collect(Collectors.joining(StrPool.COMMA, StrPool.BRACKET_START, StrPool.BRACKET_END));
+            throw ErrorCodeEnum.MENU_IS_USED_BY_ROLE.buildException(roleName);
+        }
+        //查询子菜单
+        List<Long> deleteMenuIdList = baseMapper.selectChildId(menuId);
+        deleteMenuIdList.add(menuId);
+        //删除菜单
+        baseMapper.deleteByIds(deleteMenuIdList);
     }
 
     /**
