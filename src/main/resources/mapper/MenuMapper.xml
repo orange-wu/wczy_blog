@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my9z.blog.mapper.MenuMapper">
+
+    <select id="selectChildId" resultType="java.lang.Long">
+        SELECT id
+        FROM tb_menu
+        WHERE parent_id = #{menuId}
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE
+        FROM tb_menu WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">#{id}</foreach>
+    </delete>
+
+
+</mapper>

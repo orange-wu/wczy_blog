@@ -6,7 +6,9 @@ import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.service.auth.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,4 +49,15 @@ public class MenuController {
     }
 
 
+    /**
+     * 根据菜单id删除id 物理删除
+     *
+     * @param menuId 菜单id
+     * @return {@link Result<>}
+     */
+    @DeleteMapping("/menus/{menuId}")
+    public Result<?> deleteMenu(@PathVariable("menuId") Long menuId) {
+        menuService.deleteMenuById(menuId);
+        return Result.ok();
+    }
 }
