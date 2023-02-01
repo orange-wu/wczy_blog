@@ -10,6 +10,7 @@ import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.common.util.UserUtil;
@@ -110,6 +111,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         deleteMenuIdList.add(menuId);
         //删除菜单
         baseMapper.deleteByIds(deleteMenuIdList);
+    }
+
+    @Override
+    public void saveOrUpdateMenu(SaveOrUpdateMenuReq saveOrUpdateMenuReq) {
+        MenuEntity menuEntity = BeanUtil.copyProperties(saveOrUpdateMenuReq, MenuEntity.class);
+        this.saveOrUpdate(menuEntity);
     }
 
     /**

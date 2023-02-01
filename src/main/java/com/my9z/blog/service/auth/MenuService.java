@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 
@@ -36,4 +37,11 @@ public interface MenuService extends IService<MenuEntity> {
      * @param menuId 菜单id
      */
     void deleteMenuById(Long menuId);
+
+    /**
+     * 新增或修改菜单
+     *
+     * @param saveOrUpdateMenuReq 菜单新增/修改请求对西欧
+     */
+    void saveOrUpdateMenu(SaveOrUpdateMenuReq saveOrUpdateMenuReq);
 }

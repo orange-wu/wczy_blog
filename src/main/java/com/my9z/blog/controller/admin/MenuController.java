@@ -1,6 +1,7 @@
 package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resq.MenuResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.service.auth.MenuService;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -60,4 +64,16 @@ public class MenuController {
         menuService.deleteMenuById(menuId);
         return Result.ok();
     }
+
+    /**
+     * 新增或修改菜单
+     *
+     * @return {@link Result<>}
+     */
+    @PostMapping("/menus")
+    public Result<?> saveOrUpdateMenu(@Valid @RequestBody SaveOrUpdateMenuReq saveOrUpdateMenuReq) {
+        menuService.saveOrUpdateMenu(saveOrUpdateMenuReq);
+        return Result.ok();
+    }
+
 }
