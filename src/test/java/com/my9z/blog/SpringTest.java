@@ -3,10 +3,12 @@ package com.my9z.blog;
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.resq.MenuResp;
+import com.my9z.blog.common.pojo.resq.ResourceResp;
 import com.my9z.blog.common.pojo.resq.UserInfoResp;
 import com.my9z.blog.common.pojo.resq.UserMenuResp;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
+import com.my9z.blog.service.auth.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class SpringTest {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Test
     public void userMenuTest() {
         LoginUserReq loginUserReq = new LoginUserReq();
@@ -52,6 +57,12 @@ public class SpringTest {
     @Test
     public void deleteMenuTest() {
         menuService.deleteMenuById(219L);
+    }
+
+    @Test
+    public void resourceListTest() {
+        List<ResourceResp> resourceResp = resourceService.listResources(null);
+        log.info("resourceResp:{}",JSON.toJSONString(resourceResp));
     }
 
 }
