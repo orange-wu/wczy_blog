@@ -10,9 +10,9 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="menu_ids" property="menuIds"
-                typeHandler="com.my9z.blog.config.mptypehandler.ListToJsonTypeHandler"/>
+                typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
         <result column="resource_ids" property="resourceIds"
-                typeHandler="com.my9z.blog.config.mptypehandler.ListToJsonTypeHandler"/>
+                typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
     </resultMap>
 
     <select id="selectCountMenuId" resultMap="RoleEntityMap">

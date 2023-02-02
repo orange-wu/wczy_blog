@@ -3,7 +3,7 @@ package com.my9z.blog.common.pojo.entity.auth;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.my9z.blog.common.pojo.entity.BaseEntity;
-import com.my9z.blog.config.mptypehandler.ListToJsonTypeHandler;
+import com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_user_auth")
+@TableName(value = "tb_user_auth", autoResultMap = true)
 @EqualsAndHashCode(callSuper = false)
 public class UserAuthEntity extends BaseEntity {
 
@@ -87,7 +87,7 @@ public class UserAuthEntity extends BaseEntity {
     /**
      * 角色id列表
      */
-    @TableField(typeHandler = ListToJsonTypeHandler.class)
+    @TableField(value = "role_ids", typeHandler = LongListToJsonTypeHandler.class)
     private List<Long> roleIds;
 
 }

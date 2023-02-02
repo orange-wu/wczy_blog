@@ -3,7 +3,7 @@ package com.my9z.blog.common.pojo.entity.auth;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.my9z.blog.common.pojo.entity.BaseEntity;
-import com.my9z.blog.config.mptypehandler.ListToJsonTypeHandler;
+import com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,13 +43,13 @@ public class RoleEntity extends BaseEntity {
     /**
      * 菜单id列表
      */
-    @TableField(value = "menu_ids", typeHandler = ListToJsonTypeHandler.class)
+    @TableField(value = "menu_ids", typeHandler = LongListToJsonTypeHandler.class)
     private List<Long> menuIds;
 
     /**
      * 资源接口id列表
      */
-    @TableField(value = "resource_ids", typeHandler = ListToJsonTypeHandler.class)
+    @TableField(value = "resource_ids", typeHandler = LongListToJsonTypeHandler.class)
     private List<Long> resourceIds;
 
 }
