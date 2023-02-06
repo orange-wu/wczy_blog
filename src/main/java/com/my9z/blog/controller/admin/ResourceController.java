@@ -1,6 +1,7 @@
 package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.resq.ModularResp;
 import com.my9z.blog.common.pojo.resq.ResourceResp;
 import com.my9z.blog.service.auth.ResourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +35,9 @@ public class ResourceController {
         return Result.ok(resourceService.listResources(parentId));
     }
 
+    @GetMapping("/modular")
+    public Result<List<ModularResp>> listModular() {
+        return Result.ok(resourceService.listModular());
+    }
 
 }

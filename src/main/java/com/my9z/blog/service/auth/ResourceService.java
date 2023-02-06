@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
+import com.my9z.blog.common.pojo.resq.ModularResp;
 import com.my9z.blog.common.pojo.resq.ResourceResp;
 
 import java.util.List;
@@ -21,4 +22,9 @@ public interface ResourceService extends IService<ResourceEntity> {
      */
     List<ResourceResp> listResources(Long parentId);
 
+    /**
+     * 查询接口资源的所以模块信息
+     * @return 模块信息
+     */
+    List<ModularResp> listModular();
 }
