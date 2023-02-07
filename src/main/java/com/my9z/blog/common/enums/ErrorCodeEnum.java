@@ -20,8 +20,12 @@ public enum ErrorCodeEnum {
     USER_INFO_IS_ABNORMAL(1003, "当前用户信息异常"),
 
     /***** 菜单相关 *****/
-    MENU_IS_USED_BY_ROLE(2000, "当前菜单被用户:{}关联");
+    MENU_IS_USED_BY_ROLE(2000, "当前菜单被用户:{}关联"),
 
+    /***** 接口资源相关 *****/
+    RESOURCE_IS_USED_BY_ROLE(3000, "当前接口资源被用户:{}关联"),
+
+    ;
     private final Integer code;
 
     private final String msg;

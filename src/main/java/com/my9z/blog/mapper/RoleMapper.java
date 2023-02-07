@@ -1,6 +1,7 @@
 package com.my9z.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,13 @@ public interface RoleMapper extends BaseMapper<RoleEntity> {
      * @return RoleEntity 拥有该菜单权限的角色信息
      */
     List<RoleEntity> selectCountMenuId(@Param("menuId") Long menuId);
+
+    /**
+     * 查询有几个角色拥有resourceId对应的接口资源权限
+     *
+     * @param resourceId 接口资源id
+     * @return RoleEntity 拥有该接口权限的角色信息
+     */
+    List<RoleEntity> selectCountResourceId(@Param("resourceId") Long resourceId);
 
 }

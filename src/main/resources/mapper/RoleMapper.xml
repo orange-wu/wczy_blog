@@ -28,4 +28,17 @@
           AND disable != 1;
     </select>
 
+    <select id="selectCountResourceId" resultMap="RoleEntityMap">
+        SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time, update_time
+        FROM tb_role
+        WHERE FIND_IN_SET(
+                ${resourceId},
+                TRIM(
+                        '['
+                        FROM
+                        TRIM(']' FROM resource_ids))
+            )
+          AND disable != 1;
+    </select>
+
 </mapper>
