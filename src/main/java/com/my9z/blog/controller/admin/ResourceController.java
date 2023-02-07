@@ -35,6 +35,11 @@ public class ResourceController {
         return Result.ok(resourceService.listResources(parentId));
     }
 
+    /**
+     * 获取接口模块列表
+     *
+     * @return 接口模块列表
+     */
     @GetMapping("/modular")
     public Result<List<ModularResp>> listModular() {
         return Result.ok(resourceService.listModular());
