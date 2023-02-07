@@ -17,14 +17,21 @@ public interface ResourceService extends IService<ResourceEntity> {
     /**
      * 根据接口模块id查询接口列表
      *
-     * @param parentId 接口模块id
+     * @param parentId 模块名id集合 逗号分割
      * @return 接口资源列表
      */
-    List<ResourceResp> listResources(Long parentId);
+    List<ResourceResp> listResources(String parentId);
 
     /**
      * 查询接口资源的所以模块信息
+     *
      * @return 模块信息
      */
     List<ModularResp> listModular();
+
+    /**
+     * 根据id删除接口资源
+     * 如果存在用户拥有对应的接口资源的权限 则不允许删除
+     */
+    void deleteResource(Long resourceId);
 }

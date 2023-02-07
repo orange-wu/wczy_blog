@@ -6,7 +6,9 @@ import com.my9z.blog.common.pojo.resq.ResourceResp;
 import com.my9z.blog.service.auth.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,10 +30,11 @@ public class ResourceController {
     /**
      * 获取接口资源列表
      *
+     * @param parentId 模块名id集合 逗号分割
      * @return 接口资源列表
      */
     @GetMapping("/resources")
-    public Result<List<ResourceResp>> listMenus(Long parentId) {
+    public Result<List<ResourceResp>> listMenus(String parentId) {
         return Result.ok(resourceService.listResources(parentId));
     }
 
@@ -43,6 +46,18 @@ public class ResourceController {
     @GetMapping("/modular")
     public Result<List<ModularResp>> listModular() {
         return Result.ok(resourceService.listModular());
+    }
+
+    /**
+     * 删除接口资源
+     *
+     * @param resourceId 接口资源id
+     * @return {@link Result<>}
+     */
+    @DeleteMapping("/resources/{resourceId}")
+    public Result<?> deleteResource(@PathVariable("resourceId") Long resourceId) {
+        resourceService.deleteResource(resourceId);
+        return Result.ok();
     }
 
 }
