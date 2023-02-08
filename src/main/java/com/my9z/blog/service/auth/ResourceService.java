@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
 import com.my9z.blog.common.pojo.resq.ModularResp;
 import com.my9z.blog.common.pojo.resq.ResourceResp;
 
@@ -34,4 +35,11 @@ public interface ResourceService extends IService<ResourceEntity> {
      * 如果存在用户拥有对应的接口资源的权限 则不允许删除
      */
     void deleteResource(Long resourceId);
+
+    /**
+     * 根据id字段新增或修改接口资源
+     *
+     * @param resourceReq 接口资源请求对象
+     */
+    void saveOrUpdateResource(SaveOrUpdateResourceReq resourceReq);
 }

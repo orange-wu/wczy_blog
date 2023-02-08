@@ -1,6 +1,7 @@
 package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
 import com.my9z.blog.common.pojo.resq.ModularResp;
 import com.my9z.blog.common.pojo.resq.ResourceResp;
 import com.my9z.blog.service.auth.ResourceService;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -57,6 +61,18 @@ public class ResourceController {
     @DeleteMapping("/resources/{resourceId}")
     public Result<?> deleteResource(@PathVariable("resourceId") Long resourceId) {
         resourceService.deleteResource(resourceId);
+        return Result.ok();
+    }
+
+    /**
+     * 新增或修改资源
+     *
+     * @param resourceReq 接口资源信息
+     * @return {@link Result<>}
+     */
+    @PostMapping("/resources")
+    public Result<?> saveOrUpdateResource(@RequestBody @Valid SaveOrUpdateResourceReq resourceReq) {
+        resourceService.saveOrUpdateResource(resourceReq);
         return Result.ok();
     }
 

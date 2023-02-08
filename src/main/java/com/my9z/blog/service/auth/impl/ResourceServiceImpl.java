@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
+import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
 import com.my9z.blog.common.pojo.resq.ModularResp;
 import com.my9z.blog.common.pojo.resq.ResourceResp;
 import com.my9z.blog.mapper.ResourceMapper;
@@ -73,6 +74,19 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
         }
         //直接删除对应接口资源，暂时不考虑接口模块。// TODO: 2023/2/7 后续再看是否需要管理接口模块
         baseMapper.deleteById(resourceId);
+    }
+
+    @Override
+    public void saveOrUpdateResource(SaveOrUpdateResourceReq resourceReq) {
+        //组装resourceEntity数据库对象，单独查询模块名字段 FIXME: 2023/2/8 有优化空间，这次查询可以具体新增时省略掉
+        ResourceEntity resourceEntity = BeanUtil.copyProperties(resourceReq, ResourceEntity.class);
+        ResourceEntity modular = baseMapper.selectOne(new LambdaQueryWrapper<ResourceEntity>()
+                .eq(ResourceEntity::getId, resourceEntity.getParentId())
+                .eq(ResourceEntity::getModular, Boolean.TRUE));
+        resourceEntity.setModularName(modular.getModularName());
+        //修改或新增
+        this.saveOrUpdate(resourceEntity);
+        // TODO: 2023/2/8 弄权限之后这个地方是否需要触发些什么
     }
 
 }

@@ -1,5 +1,6 @@
-import cn.hutool.core.collection.CollUtil;
-import com.alibaba.fastjson.JSON;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @description: 方便测试
@@ -7,40 +8,27 @@ import com.alibaba.fastjson.JSON;
  * @createTime: 2023-01-21  17:26
  */
 public class NoSpring {
-    public static void main(String[] args) {
-        String s = JSON.toJSONString(CollUtil.toList(1,
-                2,
-                6,
-                7,
-                8,
-                9,
-                10,
-                3,
-                11,
-                12,
-                202,
-                13,
-                201,
-                213,
-                14,
-                15,
-                16,
-                4,
-                214,
-                209,
-                17,
-                18,
-                205,
-                206,
-                208,
-                210,
-                215,
-                216,
-                217,
-                218,
-                19,
-                20,
-                5));
-        System.out.printf(s);
+    public static void main(String[] args) throws InterruptedException {
+
+        List<String> list = new ArrayList<>();
+
+        new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                list.add("AAA arraylist concurrent modify: " + i);
+            }
+        }, "threadA:::").start();
+
+        new Thread(() -> {
+            for (int i = 1000; i < 2000; i++) {
+                list.add("BBB arraylist concurrent modify: " + i);
+            }
+        }, "threadB:::").start();
+
+        Thread.sleep(5000L);
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("第" + (i + 1) + "个元素为：" + list.get(i));
+        }
+
     }
 }

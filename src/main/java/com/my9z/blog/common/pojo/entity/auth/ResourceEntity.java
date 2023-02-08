@@ -54,6 +54,6 @@ public class ResourceEntity extends BaseEntity {
     /**
      * 是否是模块
      */
-    private Boolean modular;
+    private Boolean modular = false;
 
 }
