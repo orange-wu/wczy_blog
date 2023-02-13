@@ -54,7 +54,7 @@
     </resultMap>
 
     <select id="roleRespPage" resultMap="RoleRespMap">
-        SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time
+        SELECT id, role_name, role_label, menu_ids, resource_ids, disable, create_time
         FROM tb_role
         <where>
             <if test="roleName != null ">
