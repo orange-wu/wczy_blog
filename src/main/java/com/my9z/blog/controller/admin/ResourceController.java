@@ -2,6 +2,7 @@ package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
+import com.my9z.blog.common.pojo.resp.ModularResourceResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.service.auth.ResourceService;
@@ -74,6 +75,15 @@ public class ResourceController {
     public Result<?> saveOrUpdateResource(@RequestBody @Valid SaveOrUpdateResourceReq resourceReq) {
         resourceService.saveOrUpdateResource(resourceReq);
         return Result.ok();
+    }
+
+    /**
+     * 角色管理界面接口资源数据接口
+     * @return 接口资源树形结构
+     */
+    @GetMapping("role/resources")
+    public Result<List<ModularResourceResp>> listModularResource(){
+        return Result.ok(resourceService.listModularResource());
     }
 
 }

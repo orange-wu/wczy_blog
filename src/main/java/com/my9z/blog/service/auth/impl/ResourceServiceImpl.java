@@ -11,6 +11,7 @@ import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
+import com.my9z.blog.common.pojo.resp.ModularResourceResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.mapper.ResourceMapper;
@@ -19,7 +20,9 @@ import com.my9z.blog.service.auth.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -87,6 +90,40 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
         //修改或新增
         this.saveOrUpdate(resourceEntity);
         // TODO: 2023/2/8 弄权限之后这个地方是否需要触发些什么
+    }
+
+    @Override
+    public List<ModularResourceResp> listModularResource() {
+        //查询接口模块信息以及不支持匿名访问的接口资源
+        List<ResourceEntity> resourceEntityList = baseMapper.selectList(new LambdaQueryWrapper<ResourceEntity>()
+                .select(ResourceEntity::getId, ResourceEntity::getResourceName, ResourceEntity::getModularName, ResourceEntity::getParentId)
+                .eq(ResourceEntity::getAnonymous, Boolean.FALSE)
+                .or()
+                .isNull(ResourceEntity::getAnonymous));
+        if (CollUtil.isEmpty(resourceEntityList)) return null;
+        //获取所有接口模块信息
+        List<ResourceEntity> modilarList = resourceEntityList.stream()
+                .filter(modular -> modular.getParentId() == null)
+                .collect(Collectors.toList());
+        //根据接口模块分组
+        Map<Long, List<ResourceEntity>> resourceMapByParentId = resourceEntityList.stream()
+                .filter(resource -> resource.getParentId() != null)
+                .collect(Collectors.groupingBy(ResourceEntity::getParentId));
+        //组装树形父子结构
+        List<ModularResourceResp> modularResourceRespList = new ArrayList<>();
+        modilarList.forEach(modular -> {
+            List<ResourceEntity> resourceEntities = resourceMapByParentId.get(modular.getId());
+            List<ModularResourceResp> resourceList = new ArrayList<>();
+            if (CollUtil.isNotEmpty(resourceEntities)) {
+                resourceList = resourceEntities.stream()
+                        .map(resource ->
+                                new ModularResourceResp(resource.getId(), resource.getResourceName(), null))
+                        .collect(Collectors.toList());
+            }
+            ModularResourceResp modularResourceResp = new ModularResourceResp(modular.getId(), modular.getModularName(), resourceList);
+            modularResourceRespList.add(modularResourceResp);
+        });
+        return modularResourceRespList;
     }
 
 }
