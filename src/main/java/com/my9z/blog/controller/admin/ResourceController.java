@@ -65,7 +65,7 @@ public class ResourceController {
     }
 
     /**
-     * 新增或修改资源
+     * 新增或修改资源 id为空认为是新增数据
      *
      * @param resourceReq 接口资源信息
      * @return {@link Result<>}

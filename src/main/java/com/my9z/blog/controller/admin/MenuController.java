@@ -66,7 +66,7 @@ public class MenuController {
     }
 
     /**
-     * 新增或修改菜单
+     * 新增或修改菜单 id为空认为是新增数据
      *
      * @return {@link Result<>}
      */
