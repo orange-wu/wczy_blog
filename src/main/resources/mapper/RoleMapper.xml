@@ -41,4 +41,26 @@
           AND disable != 1;
     </select>
 
+    <resultMap id="RoleRespMap" type="com.my9z.blog.common.pojo.resp.RoleResp">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_label" property="roleLabel"/>
+        <result column="disable" property="disable"/>
+        <result column="create_time" property="createTime"/>
+        <result column="menu_ids" property="menuIds"
+                typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
+        <result column="resource_ids" property="resourceIds"
+                typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
+    </resultMap>
+
+    <select id="roleRespPage" resultMap="RoleRespMap">
+        SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time
+        FROM tb_role
+        <where>
+            <if test="roleName != null ">
+                role_name like concat('%',#{roleName},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

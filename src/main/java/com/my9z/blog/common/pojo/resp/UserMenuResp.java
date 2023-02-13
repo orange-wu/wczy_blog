@@ -1,4 +1,4 @@
-package com.my9z.blog.common.pojo.resq;
+package com.my9z.blog.common.pojo.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

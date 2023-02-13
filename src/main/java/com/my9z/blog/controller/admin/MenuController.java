@@ -2,8 +2,8 @@ package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
-import com.my9z.blog.common.pojo.resq.MenuResp;
-import com.my9z.blog.common.pojo.resq.UserMenuResp;
+import com.my9z.blog.common.pojo.resp.MenuResp;
+import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.service.auth.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

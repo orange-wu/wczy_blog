@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
-import com.my9z.blog.common.pojo.resq.UserInfoResp;
+import com.my9z.blog.common.pojo.resp.UserInfoResp;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.admin.AdminUserService;
 import lombok.extern.slf4j.Slf4j;

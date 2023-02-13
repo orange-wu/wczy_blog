@@ -2,10 +2,10 @@ package com.my9z.blog;
 
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
-import com.my9z.blog.common.pojo.resq.MenuResp;
-import com.my9z.blog.common.pojo.resq.ResourceResp;
-import com.my9z.blog.common.pojo.resq.UserInfoResp;
-import com.my9z.blog.common.pojo.resq.UserMenuResp;
+import com.my9z.blog.common.pojo.resp.MenuResp;
+import com.my9z.blog.common.pojo.resp.ResourceResp;
+import com.my9z.blog.common.pojo.resp.UserInfoResp;
+import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.ResourceService;

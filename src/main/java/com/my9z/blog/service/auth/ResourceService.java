@@ -3,8 +3,8 @@ package com.my9z.blog.service.auth;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resq.ModularResp;
-import com.my9z.blog.common.pojo.resq.ResourceResp;
+import com.my9z.blog.common.pojo.resp.ModularResp;
+import com.my9z.blog.common.pojo.resp.ResourceResp;
 
 import java.util.List;
 

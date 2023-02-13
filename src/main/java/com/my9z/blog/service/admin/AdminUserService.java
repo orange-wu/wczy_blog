@@ -1,7 +1,7 @@
 package com.my9z.blog.service.admin;
 
 import com.my9z.blog.common.pojo.req.LoginUserReq;
-import com.my9z.blog.common.pojo.resq.UserInfoResp;
+import com.my9z.blog.common.pojo.resp.UserInfoResp;
 
 /**
  * @description: admin后台用户相关操作service
