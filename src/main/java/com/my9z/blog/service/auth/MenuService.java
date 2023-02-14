@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.MenuEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
+import com.my9z.blog.common.pojo.resp.MenuTreeResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
 
 import java.util.List;
@@ -44,4 +45,11 @@ public interface MenuService extends IService<MenuEntity> {
      * @param saveOrUpdateMenuReq 菜单新增/修改请求对西欧
      */
     void saveOrUpdateMenu(SaveOrUpdateMenuReq saveOrUpdateMenuReq);
+
+    /**
+     * 树形结构返回菜单数据 适配前端el-tree
+     *
+     * @return 菜单树形数据
+     */
+    List<MenuTreeResp> listMenuTree();
 }

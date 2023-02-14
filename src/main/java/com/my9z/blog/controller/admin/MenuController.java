@@ -3,6 +3,7 @@ package com.my9z.blog.controller.admin;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
+import com.my9z.blog.common.pojo.resp.MenuTreeResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.service.auth.MenuService;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,16 @@ public class MenuController {
     public Result<?> saveOrUpdateMenu(@Valid @RequestBody SaveOrUpdateMenuReq saveOrUpdateMenuReq) {
         menuService.saveOrUpdateMenu(saveOrUpdateMenuReq);
         return Result.ok();
+    }
+
+    /**
+     * 角色管理界面接口菜单数据接口
+     *
+     * @return 菜单数据树形结构
+     */
+    @GetMapping("/role/menus")
+    public Result<List<MenuTreeResp>> listMenuTree() {
+        return Result.ok(menuService.listMenuTree());
     }
 
 }

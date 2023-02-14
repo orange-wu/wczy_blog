@@ -12,6 +12,7 @@ import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
+import com.my9z.blog.common.pojo.resp.MenuTreeResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.MenuMapper;
@@ -117,6 +118,37 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
     public void saveOrUpdateMenu(SaveOrUpdateMenuReq saveOrUpdateMenuReq) {
         MenuEntity menuEntity = BeanUtil.copyProperties(saveOrUpdateMenuReq, MenuEntity.class);
         this.saveOrUpdate(menuEntity);
+    }
+
+    @Override
+    public List<MenuTreeResp> listMenuTree() {
+        //查询菜单数据
+        List<MenuEntity> menuEntityList = baseMapper.selectList(null);
+        if (CollUtil.isEmpty(menuEntityList)) return null;
+        //父级菜单集合
+        List<MenuEntity> parentMenuList = menuEntityList.stream()
+                .filter(menu -> menu.getParentId() == null)
+                .sorted(Comparator.comparing(MenuEntity::getOrderNum))
+                .collect(Collectors.toList());
+        //父级菜单id为key,菜单子集为value
+        Map<Long, List<MenuEntity>> childrenMap = menuEntityList.stream()
+                .filter(menu -> menu.getParentId() != null)
+                .collect(Collectors.groupingBy(MenuEntity::getParentId));
+        //组装树形父子结构
+        List<MenuTreeResp> menuTreeList = new ArrayList<>();
+        parentMenuList.forEach(parent -> {
+            List<MenuEntity> menuEntities = childrenMap.get(parent.getId());
+            List<MenuTreeResp> childrenList = new ArrayList<>();
+            if (CollUtil.isNotEmpty(menuEntities)) {
+                childrenList = menuEntities.stream()
+                        .sorted(Comparator.comparing(MenuEntity::getOrderNum))
+                        .map(resource -> new MenuTreeResp(resource.getId(), resource.getName(), null))
+                        .collect(Collectors.toList());
+            }
+            MenuTreeResp menuTreeResp = new MenuTreeResp(parent.getId(), parent.getName(), childrenList);
+            menuTreeList.add(menuTreeResp);
+        });
+        return menuTreeList;
     }
 
     /**
