@@ -3,7 +3,7 @@ package com.my9z.blog.service.auth;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resp.ModularResourceResp;
+import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 
@@ -49,5 +49,5 @@ public interface ResourceService extends IService<ResourceEntity> {
      *
      * @return 模块-接口集合 模式的接口资源数据
      */
-    List<ModularResourceResp> listModularResource();
+    List<ResourceTreeResp> listModularResource();
 }

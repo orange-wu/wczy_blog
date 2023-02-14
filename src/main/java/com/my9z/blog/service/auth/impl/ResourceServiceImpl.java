@@ -11,7 +11,7 @@ import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resp.ModularResourceResp;
+import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.mapper.ResourceMapper;
@@ -93,7 +93,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
     }
 
     @Override
-    public List<ModularResourceResp> listModularResource() {
+    public List<ResourceTreeResp> listModularResource() {
         //查询接口模块信息以及不支持匿名访问的接口资源
         List<ResourceEntity> resourceEntityList = baseMapper.selectList(new LambdaQueryWrapper<ResourceEntity>()
                 .select(ResourceEntity::getId, ResourceEntity::getResourceName, ResourceEntity::getModularName, ResourceEntity::getParentId)
@@ -110,20 +110,20 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
                 .filter(resource -> resource.getParentId() != null)
                 .collect(Collectors.groupingBy(ResourceEntity::getParentId));
         //组装树形父子结构
-        List<ModularResourceResp> modularResourceRespList = new ArrayList<>();
+        List<ResourceTreeResp> resourceTreeRespList = new ArrayList<>();
         modilarList.forEach(modular -> {
             List<ResourceEntity> resourceEntities = resourceMapByParentId.get(modular.getId());
-            List<ModularResourceResp> resourceList = new ArrayList<>();
+            List<ResourceTreeResp> resourceList = new ArrayList<>();
             if (CollUtil.isNotEmpty(resourceEntities)) {
                 resourceList = resourceEntities.stream()
                         .map(resource ->
-                                new ModularResourceResp(resource.getId(), resource.getResourceName(), null))
+                                new ResourceTreeResp(resource.getId(), resource.getResourceName(), null))
                         .collect(Collectors.toList());
             }
-            ModularResourceResp modularResourceResp = new ModularResourceResp(modular.getId(), modular.getModularName(), resourceList);
-            modularResourceRespList.add(modularResourceResp);
+            ResourceTreeResp resourceTreeResp = new ResourceTreeResp(modular.getId(), modular.getModularName(), resourceList);
+            resourceTreeRespList.add(resourceTreeResp);
         });
-        return modularResourceRespList;
+        return resourceTreeRespList;
     }
 
 }

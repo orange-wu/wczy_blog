@@ -2,7 +2,7 @@ package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resp.ModularResourceResp;
+import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.service.auth.ResourceService;
@@ -82,7 +82,7 @@ public class ResourceController {
      * @return 接口资源树形结构
      */
     @GetMapping("role/resources")
-    public Result<List<ModularResourceResp>> listModularResource(){
+    public Result<List<ResourceTreeResp>> listModularResource(){
         return Result.ok(resourceService.listModularResource());
     }
 
