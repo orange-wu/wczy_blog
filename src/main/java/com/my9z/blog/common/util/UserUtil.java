@@ -13,6 +13,24 @@ import java.util.Collection;
 public class UserUtil {
 
     /**
+     * 登陆
+     *
+     * @param id 用户id
+     */
+    public static void login(Long id) {
+        StpUtil.login(id);
+    }
+
+    /**
+     * 判断当前会话是否已经登陆
+     *
+     * @return 是否登陆
+     */
+    public static boolean isLogin() {
+        return StpUtil.isLogin();
+    }
+
+    /**
      * 获取当前登陆用户的id
      *
      * @return 当前登陆用户的id
