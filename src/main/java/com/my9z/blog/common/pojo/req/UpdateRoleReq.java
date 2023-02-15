@@ -33,6 +33,11 @@ public class UpdateRoleReq {
     private String roleLabel;
 
     /**
+     * 是否禁用
+     */
+    private Boolean disable;
+
+    /**
      * 资源列表
      */
     private List<Long> resourceIds;

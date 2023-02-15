@@ -52,9 +52,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
         if (userAuth == null || CollUtil.isEmpty(userAuth.getRoleIds()))
             throw ErrorCodeEnum.USER_INFO_IS_ABNORMAL.buildException();
         List<Long> roleIds = userAuth.getRoleIds();
-        //2、拿到对应角色拥有的目录权限id
+        //2、拿到对应没被禁用的角色拥有的目录权限id
         List<RoleEntity> roles = roleMapper.selectBatchIds(roleIds);
         Set<Long> menuIds = roles.stream()
+                .filter(role -> role.getDisable() == Boolean.FALSE)
                 .flatMap(role -> role.getMenuIds().stream())
                 .collect(Collectors.toSet());
         //用户对应的角色没有任何权限
