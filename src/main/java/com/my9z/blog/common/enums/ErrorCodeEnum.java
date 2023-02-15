@@ -25,6 +25,10 @@ public enum ErrorCodeEnum {
     /***** 接口资源相关 *****/
     RESOURCE_IS_USED_BY_ROLE(3000, "当前接口资源被用户:{}关联"),
 
+    /***** 角色相关 *****/
+    ROLE_NAME_ALREADY_EXIST(4000, "此角色名已经存在"),
+    ROLE_DATA_IS_NOT_EXIST(4001, "当前角色数据不存在"),
+
     ;
     private final Integer code;
 

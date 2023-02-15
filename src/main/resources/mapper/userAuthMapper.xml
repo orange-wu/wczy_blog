@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my9z.blog.mapper.UserAuthMapper">
+
+    <resultMap id="UserAuthEntityMap" type="com.my9z.blog.common.pojo.entity.auth.UserAuthEntity">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="login_type" property="loginType"/>
+        <result column="ip_address" property="ipAddress"/>
+        <result column="ip_source" property="ipSource"/>
+        <result column="email" property="email"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+        <result column="intro" property="intro"/>
+        <result column="web_site" property="webSite"/>
+        <result column="disable" property="disable"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="role_ids" property="roleIds"
+                typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
+    </resultMap>
+
+    <select id="selectUsrByRoleId" resultMap="UserAuthEntityMap">
+        SELECT id,
+               username,
+               password,
+               login_type,
+               ip_address,
+               ip_source,
+               email,
+               nickname,
+               avatar,
+               intro,
+               web_site,
+               disable,
+               role_ids,
+               create_time,
+               update_time,
+               last_login_time
+        FROM tb_user_auth
+        WHERE FIND_IN_SET(
+                ${roleId},
+                TRIM(
+                        '['
+                        FROM
+                        TRIM(']' FROM role_ids))
+            )
+          AND disable != 1;
+    </select>
+
+</mapper>
