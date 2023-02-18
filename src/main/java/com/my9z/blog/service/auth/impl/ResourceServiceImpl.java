@@ -6,14 +6,17 @@ import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
+import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
+import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.mapper.ResourceMapper;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.service.auth.ResourceService;
@@ -37,18 +40,18 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
     private RoleMapper roleMapper;
 
     @Override
-    public List<ResourceResp> listResources(String parentId) {
+    public WPage<ResourceResp> listResources(SearchResourceReq searchResourceReq) {
+        String parentId = searchResourceReq.getParentId();
         //解析模块id集合
         List<String> parentIdStrList = StrUtil.split(parentId, StrPool.COMMA);
         List<Long> parentIdList = parentIdStrList.stream()
                 .filter(StrUtil::isNotBlank)
                 .map(NumberUtil::parseLong).collect(Collectors.toList());
-        //根据模块id集合查询接口资源
-        List<ResourceEntity> resourceEntityList = baseMapper.selectList(new LambdaQueryWrapper<ResourceEntity>()
-                .in(CollUtil.isNotEmpty(parentIdList), ResourceEntity::getParentId, parentIdList)
-                .eq(ResourceEntity::getModular, Boolean.FALSE)
-                .orderByAsc(ResourceEntity::getParentId));
-        return BeanUtil.copyToList(resourceEntityList, ResourceResp.class);
+        //根据模块id集合分页查询接口资源
+        Page<ResourceResp> page = new Page<>(searchResourceReq.getPageNumber(), searchResourceReq.getPageSize());
+        Page<ResourceResp> resourceRespPage = baseMapper.resourceRespPage(page, parentIdList);
+        return new WPage<>(resourceRespPage.getCurrent(), resourceRespPage.getSize(),
+                resourceRespPage.getTotal(), resourceRespPage.getRecords());
     }
 
     @Override

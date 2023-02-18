@@ -1,6 +1,7 @@
 package com.my9z.blog.common.pojo.req;
 
-import com.my9z.blog.common.pojo.Page;
+import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.resp.RoleResp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SearchRoleReq extends Page {
+public class SearchRoleReq extends WPage<RoleResp> {
 
     /**
      * 角色名

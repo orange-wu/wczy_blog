@@ -1,7 +1,7 @@
 package com.my9z.blog.service.auth;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
 import com.my9z.blog.common.pojo.req.SearchRoleReq;
@@ -21,7 +21,7 @@ public interface RoleService extends IService<RoleEntity> {
      * @param searchRoleReq 分页查询入参
      * @return 用户信息分页数据
      */
-    Page<RoleResp> listRoles(SearchRoleReq searchRoleReq);
+    WPage<RoleResp> listRoles(SearchRoleReq searchRoleReq);
 
     /**
      * 新增角色

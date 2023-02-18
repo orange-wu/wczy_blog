@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
@@ -37,10 +38,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     private UserAuthMapper userAuthMapper;
 
     @Override
-    public Page<RoleResp> listRoles(SearchRoleReq searchRoleReq) {
+    public WPage<RoleResp> listRoles(SearchRoleReq searchRoleReq) {
         Page<RoleResp> page = new Page<>(searchRoleReq.getPageNumber(), searchRoleReq.getPageSize());
         //分页模糊查询
-        return baseMapper.roleRespPage(page, searchRoleReq.getRoleName());
+        Page<RoleResp> roleRespPage = baseMapper.roleRespPage(page, searchRoleReq.getRoleName());
+        return new WPage<>(roleRespPage.getCurrent(), roleRespPage.getSize(),
+                roleRespPage.getTotal(), roleRespPage.getRecords());
     }
 
     @Override

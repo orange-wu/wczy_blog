@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my9z.blog.mapper.ResourceMapper">
+
+    <select id="resourceRespPage" resultType="com.my9z.blog.common.pojo.resp.ResourceResp">
+        SELECT id,
+        resource_name,
+        url,
+        modular_name,
+        request_method,
+        parent_id,
+        anonymous,
+        modular,
+        create_time
+        FROM tb_resource
+        WHERE modular = 0
+        <if test="parentIdList != null and parentIdList.size() > 0">
+            AND parent_id IN
+            <foreach collection="parentIdList" item="id" separator="," open="(" close=")">#{id}</foreach>
+        </if>
+        ORDER BY parent_id
+    </select>
+
+</mapper>

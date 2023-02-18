@@ -1,8 +1,10 @@
 package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
+import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
@@ -19,10 +21,10 @@ public interface ResourceService extends IService<ResourceEntity> {
     /**
      * 根据接口模块id查询接口列表
      *
-     * @param parentId 模块名id集合 逗号分割
+     * @param searchResourceReq 查询请求对象
      * @return 接口资源列表
      */
-    List<ResourceResp> listResources(String parentId);
+    WPage<ResourceResp> listResources(SearchResourceReq searchResourceReq);
 
     /**
      * 查询接口资源的所以模块信息

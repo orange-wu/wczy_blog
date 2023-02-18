@@ -1,10 +1,12 @@
 package com.my9z.blog.controller.admin;
 
 import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
-import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
+import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
+import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
 import com.my9z.blog.service.auth.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +35,14 @@ public class ResourceController {
     private ResourceService resourceService;
 
     /**
-     * 获取接口资源列表
+     * 分页获取接口资源列表
      *
-     * @param parentId 模块名id集合 逗号分割
+     * @param searchResourceReq 分页查询请求对象
      * @return 接口资源列表
      */
     @GetMapping("/resources")
-    public Result<List<ResourceResp>> listMenus(String parentId) {
-        return Result.ok(resourceService.listResources(parentId));
+    public Result<WPage<ResourceResp>> listMenus(SearchResourceReq searchResourceReq) {
+        return Result.ok(resourceService.listResources(searchResourceReq));
     }
 
     /**
@@ -79,10 +81,11 @@ public class ResourceController {
 
     /**
      * 角色管理界面接口资源数据接口
+     *
      * @return 接口资源树形结构
      */
     @GetMapping("role/resources")
-    public Result<List<ResourceTreeResp>> listModularResource(){
+    public Result<List<ResourceTreeResp>> listModularResource() {
         return Result.ok(resourceService.listModularResource());
     }
 

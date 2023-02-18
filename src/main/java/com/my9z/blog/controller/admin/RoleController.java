@@ -1,7 +1,7 @@
 package com.my9z.blog.controller.admin;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.my9z.blog.common.pojo.Result;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
 import com.my9z.blog.common.pojo.req.SearchRoleReq;
 import com.my9z.blog.common.pojo.req.UpdateRoleReq;
@@ -39,7 +39,7 @@ public class RoleController {
      * @return 用户信息分页数据
      */
     @GetMapping("/roles")
-    public Result<Page<RoleResp>> listRoles(SearchRoleReq searchRoleReq) {
+    public Result<WPage<RoleResp>> listRoles(SearchRoleReq searchRoleReq) {
         return Result.ok(roleService.listRoles(searchRoleReq));
     }
 
