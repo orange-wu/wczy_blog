@@ -67,6 +67,12 @@ public class RoleController {
         return Result.ok();
     }
 
+    /**
+     * 删除角色
+     *
+     * @param roleId 角色id
+     * @return {@link Result<>}
+     */
     @DeleteMapping("/roles/{roleId}")
     public Result<?> deleteRoleById(@PathVariable("roleId") Long roleId) {
         roleService.deleteRoleById(roleId);
