@@ -28,6 +28,7 @@ public enum ErrorCodeEnum {
     /***** 角色相关 *****/
     ROLE_NAME_ALREADY_EXIST(4000, "此角色名已经存在"),
     ROLE_DATA_IS_NOT_EXIST(4001, "当前角色数据不存在"),
+    ROLE_USER_EXIST(4002, "当前角色下存在实际用户"),
 
     ;
     private final Integer code;

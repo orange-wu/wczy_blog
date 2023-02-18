@@ -1,6 +1,7 @@
 package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -92,6 +93,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             //强制下线该用户
             UserUtil.logout(userIdList);
         }
+    }
+
+    @Override
+    public void deleteRoleById(Long roleId) {
+        //查询当前角色下是否存在用户
+        List<UserAuthEntity> userAuthEntities = userAuthMapper.selectUsrByRoleId(roleId);
+        if (CollUtil.isNotEmpty(userAuthEntities)) {
+            throw ErrorCodeEnum.ROLE_USER_EXIST.buildException();
+        }
+        baseMapper.deleteById(roleId);
     }
 
 }

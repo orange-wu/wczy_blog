@@ -36,4 +36,11 @@ public interface RoleService extends IService<RoleEntity> {
      * @param updateRoleReq 修改角色对象
      */
     void updateRole(UpdateRoleReq updateRoleReq);
+
+    /**
+     * 删除角色
+     *
+     * @param roleId 角色id
+     */
+    void deleteRoleById(Long roleId);
 }
