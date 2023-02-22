@@ -40,13 +40,7 @@
                update_time,
                last_login_time
         FROM tb_user_auth
-        WHERE FIND_IN_SET(
-                ${roleId},
-                TRIM(
-                        '['
-                        FROM
-                        TRIM(']' FROM role_ids))
-            )
+        WHERE JSON_CONTAINS(role_ids, JSON_ARRAY(${roleId}))
           AND disable != 1;
     </select>
 

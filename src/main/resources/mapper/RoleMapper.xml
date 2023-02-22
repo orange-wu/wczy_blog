@@ -18,26 +18,14 @@
     <select id="selectCountMenuId" resultMap="RoleEntityMap">
         SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time, update_time
         FROM tb_role
-        WHERE FIND_IN_SET(
-                ${menuId},
-                TRIM(
-                        '['
-                        FROM
-                        TRIM(']' FROM menu_ids))
-            )
+        WHERE JSON_CONTAINS(menu_ids, JSON_ARRAY(${menuId}))
           AND disable != 1;
     </select>
 
     <select id="selectCountResourceId" resultMap="RoleEntityMap">
         SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time, update_time
         FROM tb_role
-        WHERE FIND_IN_SET(
-                ${resourceId},
-                TRIM(
-                        '['
-                        FROM
-                        TRIM(']' FROM resource_ids))
-            )
+        WHERE JSON_CONTAINS(menu_ids, JSON_ARRAY(${resourceId}))
           AND disable != 1;
     </select>
 
