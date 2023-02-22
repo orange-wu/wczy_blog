@@ -1,7 +1,9 @@
 package com.my9z.blog;
 
 import com.alibaba.fastjson.JSON;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
+import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
@@ -9,6 +11,7 @@ import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.ResourceService;
+import com.my9z.blog.service.auth.UserAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +40,9 @@ public class SpringTest {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private UserAuthService userAuthService;
+
     @Test
     public void userMenuTest() {
         LoginUserReq loginUserReq = new LoginUserReq();
@@ -61,8 +67,14 @@ public class SpringTest {
 
     @Test
     public void resourceListTest() {
-        List<ResourceResp> resourceResp = resourceService.listResources(null);
-        log.info("resourceResp:{}",JSON.toJSONString(resourceResp));
+        WPage<ResourceResp> resourceRespWPage = resourceService.listResources(new SearchResourceReq());
+        log.info("resourceResp:{}",JSON.toJSONString(resourceRespWPage));
+    }
+
+    @Test
+    public void permissionTest() {
+        List<String> permissionList = userAuthService.userPermissionList(995L);
+        log.info("permissionList:{}",JSON.toJSONString(permissionList));
     }
 
 }
