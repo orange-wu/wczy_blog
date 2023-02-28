@@ -4,8 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
+import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.mapper.ResourceMapper;
+import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.auth.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
     @Autowired
     private ResourceMapper resourceMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public List<String> userPermissionList(Long userId) {
         if (userId == null) {
@@ -36,6 +41,21 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
         }
         return userResourceList.stream()
                 .map(ResourceEntity::getPermission)
+                .filter(StrUtil::isNotBlank)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> userRoleList(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        List<RoleEntity> roleEntitieList = roleMapper.userRoleList(userId);
+        if (CollUtil.isEmpty(roleEntitieList)) {
+            return null;
+        }
+        return roleEntitieList.stream()
+                .map(RoleEntity::getRoleLabel)
                 .filter(StrUtil::isNotBlank)
                 .collect(Collectors.toList());
     }

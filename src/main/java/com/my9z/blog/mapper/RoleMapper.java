@@ -42,4 +42,11 @@ public interface RoleMapper extends BaseMapper<RoleEntity> {
      */
     Page<RoleResp> roleRespPage(@Param(("page")) Page<RoleResp> page, @Param("roleName") String roleName);
 
+    /**
+     * 获取用户的角色集合
+     *
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    List<RoleEntity> userRoleList(@Param("userId") Long userId);
 }

@@ -75,6 +75,8 @@ public class SpringTest {
     public void permissionTest() {
         List<String> permissionList = userAuthService.userPermissionList(995L);
         log.info("permissionList:{}",JSON.toJSONString(permissionList));
+        List<String> roleList = userAuthService.userRoleList(995L);
+        log.info("roleList:{}",JSON.toJSONString(roleList));
     }
 
 }

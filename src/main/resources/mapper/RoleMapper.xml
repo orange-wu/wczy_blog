@@ -51,4 +51,20 @@
         </where>
     </select>
 
+    <select id="userRoleList" resultType="com.my9z.blog.common.pojo.entity.auth.RoleEntity">
+        SELECT `role`.id,
+               `role`.role_name,
+               `role`.role_label,
+               `role`.menu_ids,
+               `role`.resource_ids,
+               `role`.disable,
+               `role`.create_time,
+               `role`.update_time
+        FROM tb_user_auth `user`
+                 LEFT JOIN tb_role `role` ON JSON_CONTAINS(`user`.role_ids, JSON_ARRAY(`role`.id))
+        WHERE `user`.id = ${userId}
+          AND `user`.DISABLE != 1
+          AND `role`.DISABLE != 1
+    </select>
+
 </mapper>

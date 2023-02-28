@@ -30,9 +30,7 @@ public class UserPermissionsConfig implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        String loginIdStr = StrUtil.str(loginId, StandardCharsets.UTF_8);
-        long userId = NumberUtil.parseLong(loginIdStr);
-        return userAuthService.userPermissionList(userId);
+        return userAuthService.userPermissionList(getUserId(loginId));
     }
 
     /**
@@ -44,6 +42,17 @@ public class UserPermissionsConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return null;
+        return userAuthService.userRoleList(getUserId(loginId));
+    }
+
+    /**
+     * userId转换long类型
+     *
+     * @param loginId object类型的id
+     * @return long类型的id
+     */
+    private static long getUserId(Object loginId) {
+        String loginIdStr = StrUtil.str(loginId, StandardCharsets.UTF_8);
+        return NumberUtil.parseLong(loginIdStr);
     }
 }

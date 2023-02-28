@@ -15,9 +15,18 @@ public interface UserAuthService extends IService<UserAuthEntity> {
 
     /**
      * 获取用户的权限码集合
+     *
      * @param userId 用户id
      * @return 权限码集合
      */
     List<String> userPermissionList(Long userId);
+
+    /**
+     * 获取用户的角色集合
+     *
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    List<String> userRoleList(Long userId);
 
 }
