@@ -37,6 +37,12 @@ public class SaveOrUpdateResourceReq {
     private String url;
 
     /**
+     * 权限名不能为空
+     */
+    @NotBlank(message = "权限名不能为空")
+    private String permission;
+
+    /**
      * 请求方式
      */
     @NotBlank(message = "请求方式不能为空")

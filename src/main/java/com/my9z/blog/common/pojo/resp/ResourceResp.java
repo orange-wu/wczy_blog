@@ -38,6 +38,11 @@ public class ResourceResp {
     private String url;
 
     /**
+     * 权限名
+     */
+    private String permission;
+
+    /**
      * 请求方式
      */
     private String requestMethod;

@@ -6,6 +6,7 @@
         SELECT id,
         resource_name,
         url,
+        permission,
         modular_name,
         request_method,
         parent_id,

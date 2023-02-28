@@ -84,7 +84,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
 
     @Override
     public void saveOrUpdateResource(SaveOrUpdateResourceReq resourceReq) {
-        //组装resourceEntity数据库对象，单独查询模块名字段 FIXME: 2023/2/8 有优化空间，这次查询可以具体新增时省略掉
+        //组装resourceEntity数据库对象，单独查询模块名字段
         ResourceEntity resourceEntity = BeanUtil.copyProperties(resourceReq, ResourceEntity.class);
         ResourceEntity modular = baseMapper.selectOne(new LambdaQueryWrapper<ResourceEntity>()
                 .eq(ResourceEntity::getId, resourceEntity.getParentId())
