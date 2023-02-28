@@ -1,5 +1,6 @@
 package com.my9z.blog.controller.admin;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateMenuReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
@@ -39,6 +40,7 @@ public class MenuController {
      * @return 当前登录用户的菜单列表
      */
     @GetMapping("/user/menus")
+    @SaCheckPermission(value = "menus-user-list", orRole = "admin")
     public Result<List<UserMenuResp>> listUserMenus() {
         return Result.ok(menuService.listUserMenus());
     }
@@ -49,6 +51,7 @@ public class MenuController {
      * @return 所有菜单列表
      */
     @GetMapping("/menus")
+    @SaCheckPermission(value = "menus-list", orRole = "admin")
     public Result<List<MenuResp>> listMenus(String menuName) {
         return Result.ok(menuService.listMenus(menuName));
     }
@@ -61,6 +64,7 @@ public class MenuController {
      * @return {@link Result<>}
      */
     @DeleteMapping("/menus/{menuId}")
+    @SaCheckPermission(value = "menus-delete", orRole = "admin")
     public Result<?> deleteMenu(@PathVariable("menuId") Long menuId) {
         menuService.deleteMenuById(menuId);
         return Result.ok();
@@ -72,6 +76,7 @@ public class MenuController {
      * @return {@link Result<>}
      */
     @PostMapping("/menus")
+    @SaCheckPermission(value = "menus-saveOrUpdate", orRole = "admin")
     public Result<?> saveOrUpdateMenu(@Valid @RequestBody SaveOrUpdateMenuReq saveOrUpdateMenuReq) {
         menuService.saveOrUpdateMenu(saveOrUpdateMenuReq);
         return Result.ok();
@@ -83,6 +88,7 @@ public class MenuController {
      * @return 菜单数据树形结构
      */
     @GetMapping("/role/menus")
+    @SaCheckPermission(value = "menus-role-list", orRole = "admin")
     public Result<List<MenuTreeResp>> listMenuTree() {
         return Result.ok(menuService.listMenuTree());
     }

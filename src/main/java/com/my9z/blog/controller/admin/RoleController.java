@@ -1,5 +1,6 @@
 package com.my9z.blog.controller.admin;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
@@ -39,6 +40,7 @@ public class RoleController {
      * @return 用户信息分页数据
      */
     @GetMapping("/roles")
+    @SaCheckPermission(value = "roles-list", orRole = "admin")
     public Result<WPage<RoleResp>> listRoles(SearchRoleReq searchRoleReq) {
         return Result.ok(roleService.listRoles(searchRoleReq));
     }
@@ -50,6 +52,7 @@ public class RoleController {
      * @return {@link Result<>}
      */
     @PostMapping("/saveRole")
+    @SaCheckPermission(value = "roles-save", orRole = "admin")
     public Result<?> saveRole(@RequestBody @Valid SaveRoleReq saveRoleReq) {
         roleService.saveRole(saveRoleReq);
         return Result.ok();
@@ -62,6 +65,7 @@ public class RoleController {
      * @return {@link Result<>}
      */
     @PostMapping("/updateRole")
+    @SaCheckPermission(value = "roles-update", orRole = "admin")
     public Result<?> updateRole(@RequestBody @Valid UpdateRoleReq updateRoleReq) {
         roleService.updateRole(updateRoleReq);
         return Result.ok();
@@ -74,6 +78,7 @@ public class RoleController {
      * @return {@link Result<>}
      */
     @DeleteMapping("/roles/{roleId}")
+    @SaCheckPermission(value = "roles-delete", orRole = "admin")
     public Result<?> deleteRoleById(@PathVariable("roleId") Long roleId) {
         roleService.deleteRoleById(roleId);
         return Result.ok();

@@ -53,6 +53,7 @@ public class ResourceController {
      * @return 接口模块列表
      */
     @GetMapping("/modular")
+    @SaCheckPermission(value = "modular-ist", orRole = "admin")
     public Result<List<ModularResp>> listModular() {
         return Result.ok(resourceService.listModular());
     }
@@ -64,6 +65,7 @@ public class ResourceController {
      * @return {@link Result<>}
      */
     @DeleteMapping("/resources/{resourceId}")
+    @SaCheckPermission(value = "resources-delete", orRole = "admin")
     public Result<?> deleteResource(@PathVariable("resourceId") Long resourceId) {
         resourceService.deleteResource(resourceId);
         return Result.ok();
@@ -76,6 +78,7 @@ public class ResourceController {
      * @return {@link Result<>}
      */
     @PostMapping("/resources")
+    @SaCheckPermission(value = "resources-saveOrUpdate", orRole = "admin")
     public Result<?> saveOrUpdateResource(@RequestBody @Valid SaveOrUpdateResourceReq resourceReq) {
         resourceService.saveOrUpdateResource(resourceReq);
         return Result.ok();
@@ -87,6 +90,7 @@ public class ResourceController {
      * @return 接口资源树形结构
      */
     @GetMapping("role/resources")
+    @SaCheckPermission(value = "resources-role-list", orRole = "admin")
     public Result<List<ResourceTreeResp>> listModularResource() {
         return Result.ok(resourceService.listModularResource());
     }
