@@ -2,6 +2,7 @@ package com.my9z.blog.config;
 
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import cn.hutool.core.util.StrUtil;
 import com.my9z.blog.common.enums.StatusCodeEnum;
 import com.my9z.blog.common.exception.BusinessException;
@@ -45,6 +46,11 @@ public class ExceptionAdviceConfig {
     @ExceptionHandler(value = NotLoginException.class)
     public Result<?> errorHandler(NotLoginException e) {
         return Result.fail(StatusCodeEnum.NO_LOGIN);
+    }
+
+    @ExceptionHandler(value = NotPermissionException.class)
+    public Result<?> errorHandler(NotPermissionException e) {
+        return Result.fail(StatusCodeEnum.AUTHORIZED);
     }
 
     /**

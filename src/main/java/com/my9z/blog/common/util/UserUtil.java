@@ -31,6 +31,13 @@ public class UserUtil {
     }
 
     /**
+     * 判断当前会话是否已经登陆,没登陆则抛出异常
+     */
+    public static void checkLogin() {
+        StpUtil.checkLogin();
+    }
+
+    /**
      * 获取当前登陆用户的id
      *
      * @return 当前登陆用户的id

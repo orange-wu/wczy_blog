@@ -18,6 +18,7 @@ import java.util.List;
 @Component
 public class UserPermissionsConfig implements StpInterface {
 
+    // TODO: 2023/2/28 每次接口鉴权都要去查 改为redis
     @Autowired
     private UserAuthService userAuthService;
 

@@ -1,5 +1,6 @@
 package com.my9z.blog.controller.admin;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
@@ -21,6 +22,7 @@ public class UserController {
     @Autowired
     private AdminUserService adminService;
 
+    @SaIgnore
     @PostMapping("/login")
     public Result<UserInfoResp> login(LoginUserReq loginUser) {
         return Result.ok(adminService.login(loginUser));

@@ -1,5 +1,6 @@
 package com.my9z.blog.controller.admin;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.SaveOrUpdateResourceReq;
@@ -41,6 +42,7 @@ public class ResourceController {
      * @return 接口资源列表
      */
     @GetMapping("/resources")
+    @SaCheckPermission(value = "resources-list", orRole = "admin")
     public Result<WPage<ResourceResp>> listMenus(SearchResourceReq searchResourceReq) {
         return Result.ok(resourceService.listResources(searchResourceReq));
     }
