@@ -30,30 +30,42 @@ spring:
       connection-test-query: SELECT 1
   # redis配置
   redis:
-    host: 43.139.118.53
-    port: 6379
+    redisson:
+      config: |
+        singleServerConfig:
+          clientName: wczy-redisson
+          address: "redis://43.139.118.53:6379"
+          password: wcz991226
+          database: 0
+          timeout: 2000
+          connectTimeout: 10000
+          connectionMinimumIdleSize: 20
+          connectionPoolSize: 100
+          idleConnectionTimeout: 15000 
+        codec: !<org.redisson.codec.JsonJacksonCodec> {}
+        transportMode: "NIO"
   # es配置 若搜索模式为mysql可删除
   elasticsearch:
     rest:
       uris: 43.139.118.53:9200
   # 邮箱配置
-#  mail:
-#    host: smtp.qq.com
-#    username: 邮箱用户名
-#    password: 邮箱授权码
-#    default-encoding: UTF-8
-#    port: 587
-#    properties:
-#      mail:
-#      smtp:
-#      auth: true
-#      socketFactory:
-#      class: javax.net.ssl.SSLSocketFactory
+  #  mail:
+  #    host: smtp.qq.com
+  #    username: 邮箱用户名
+  #    password: 邮箱授权码
+  #    default-encoding: UTF-8
+  #    port: 587
+  #    properties:
+  #      mail:
+  #      smtp:
+  #      auth: true
+  #      socketFactory:
+  #      class: javax.net.ssl.SSLSocketFactory
   # 上传图片大小限制
   servlet:
     multipart:
       max-file-size: 100MB
-      max-request-size:  100MB
+      max-request-size: 100MB
 
 # 配置MybatisPlus
 mybatis-plus:
