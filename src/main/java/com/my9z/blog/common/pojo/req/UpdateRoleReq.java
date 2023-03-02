@@ -26,11 +26,6 @@ public class UpdateRoleReq {
     @NotBlank(message = "角色名不能为空")
     private String roleName;
 
-    /**
-     * 权限名
-     */
-    @NotBlank(message = "权限名不能为空")
-    private String roleLabel;
 
     /**
      * 是否禁用

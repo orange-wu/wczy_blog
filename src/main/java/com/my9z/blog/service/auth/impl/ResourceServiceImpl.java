@@ -90,9 +90,12 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
                 .eq(ResourceEntity::getId, resourceEntity.getParentId())
                 .eq(ResourceEntity::getModular, Boolean.TRUE));
         resourceEntity.setModularName(modular.getModularName());
+        if (resourceEntity.getId() != null) {
+            //permission字段不支持修改
+            resourceEntity.setPermission(null);
+        }
         //修改或新增
         this.saveOrUpdate(resourceEntity);
-        // TODO: 2023/2/8 弄权限之后这个地方是否需要触发些什么
     }
 
     @Override
