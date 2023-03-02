@@ -2,11 +2,13 @@ package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.my9z.blog.common.constant.RedisKeyConstant;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
@@ -19,6 +21,8 @@ import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.auth.RoleService;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +39,8 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> implements RoleService {
 
     @Autowired
+    private RedissonClient redissonClient;
+    @Autowired
     private UserAuthMapper userAuthMapper;
 
     @Override
@@ -48,11 +54,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     @Override
     public void saveRole(SaveRoleReq saveRoleReq) {
-        //判断角色名唯一
+        //判断角色名和权限名唯一
         Integer count = baseMapper.selectCount(new LambdaQueryWrapper<RoleEntity>()
-                .eq(RoleEntity::getRoleName, saveRoleReq.getRoleName()));
+                .eq(RoleEntity::getRoleName, saveRoleReq.getRoleName())
+                .or()
+                .eq(RoleEntity::getRoleLabel, saveRoleReq.getRoleLabel()));
         if (count > BigDecimal.ZERO.intValue()) {
-            throw ErrorCodeEnum.ROLE_NAME_ALREADY_EXIST.buildException();
+            throw ErrorCodeEnum.ROLE_NAME_OR_LABEL_ALREADY_EXIST.buildException();
         }
         //直接新增角色
         RoleEntity roleEntity = BeanUtil.copyProperties(saveRoleReq, RoleEntity.class);
@@ -61,7 +69,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     @Override
     public void updateRole(UpdateRoleReq updateRoleReq) {
-        //判断角色名和权限名分别唯一
+        //判断角色名唯一
         RoleEntity roleEntity = baseMapper.selectOne(new LambdaQueryWrapper<RoleEntity>()
                 .eq(RoleEntity::getRoleName, updateRoleReq.getRoleName()));
         if (roleEntity != null && !ObjectUtil.equals(roleEntity.getId(), updateRoleReq.getId())) {
@@ -95,6 +103,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                     .collect(Collectors.toList());
             //强制下线该用户
             UserUtil.logout(userIdList);
+            //删除相关用户权限缓存
+            deleteUserAuthCache(resourceUpdate, disableUpdate, userIdList);
         }
     }
 
@@ -106,6 +116,28 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             throw ErrorCodeEnum.ROLE_USER_EXIST.buildException();
         }
         baseMapper.deleteById(roleId);
+    }
+
+    /**
+     * 删除用户的接口资源和用户权限缓存
+     *
+     * @param resourceUpdate 是否修改接口资源
+     * @param disableUpdate  是否禁用用户
+     * @param userIdList     用户id集合
+     */
+    private void deleteUserAuthCache(boolean resourceUpdate, boolean disableUpdate, List<Long> userIdList) {
+        //用户接口权限缓存删除
+        if (resourceUpdate) {
+            String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
+            RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
+            userPermissionCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
+        }
+        //用户角色缓存删除
+        if (disableUpdate) {
+            String userRoleKey = RedisKeyConstant.getUserRoleKey();
+            RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
+            userRoleCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
+        }
     }
 
 }

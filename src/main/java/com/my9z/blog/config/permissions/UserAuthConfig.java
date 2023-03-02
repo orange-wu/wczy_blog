@@ -1,9 +1,13 @@
 package com.my9z.blog.config.permissions;
 
 import cn.dev33.satoken.stp.StpInterface;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import com.my9z.blog.common.constant.RedisKeyConstant;
 import com.my9z.blog.service.auth.UserAuthService;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +20,12 @@ import java.util.List;
  * @createTime: 2023-02-20  17:32
  */
 @Component
-public class UserPermissionsConfig implements StpInterface {
+public class UserAuthConfig implements StpInterface {
 
     // TODO: 2023/2/28 每次接口鉴权都要去查 改为redis
+    @Autowired
+    private RedissonClient redissonClient;
+
     @Autowired
     private UserAuthService userAuthService;
 
@@ -31,7 +38,18 @@ public class UserPermissionsConfig implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return userAuthService.userPermissionList(getUserId(loginId));
+        String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
+        RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
+        long userId = getUserId(loginId);
+        //从缓存中查寻该用户权限码
+        if (CollUtil.isNotEmpty(userPermissionCache) && userPermissionCache.containsKey(userId)) {
+            return userPermissionCache.get(userId);
+        }
+        //缓存中没有从表中查询
+        List<String> permissionList = userAuthService.userPermissionList(userId);
+        //存入缓存
+        userPermissionCache.fastPut(userId, permissionList);
+        return permissionList;
     }
 
     /**
@@ -43,7 +61,18 @@ public class UserPermissionsConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return userAuthService.userRoleList(getUserId(loginId));
+        String userRoleKey = RedisKeyConstant.getUserRoleKey();
+        RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
+        long userId = getUserId(loginId);
+        //从缓存中查寻该用户角色
+        if (CollUtil.isNotEmpty(userRoleCache) && userRoleCache.containsKey(userId)) {
+            return userRoleCache.get(userId);
+        }
+        //缓存中没有从表中查询
+        List<String> roleList = userAuthService.userRoleList(userId);
+        //存入缓存
+        userRoleCache.fastPut(userId, roleList);
+        return roleList;
     }
 
     /**

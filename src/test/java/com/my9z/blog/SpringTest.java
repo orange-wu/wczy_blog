@@ -8,6 +8,7 @@ import com.my9z.blog.common.pojo.resp.MenuResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
+import com.my9z.blog.config.permissions.UserAuthConfig;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.ResourceService;
@@ -43,6 +44,9 @@ public class SpringTest {
     @Autowired
     private UserAuthService userAuthService;
 
+    @Autowired
+    private UserAuthConfig userAuthConfig;
+
     @Test
     public void userMenuTest() {
         LoginUserReq loginUserReq = new LoginUserReq();
@@ -77,6 +81,22 @@ public class SpringTest {
         log.info("permissionList:{}",JSON.toJSONString(permissionList));
         List<String> roleList = userAuthService.userRoleList(995L);
         log.info("roleList:{}",JSON.toJSONString(roleList));
+        userAuthConfig.getRoleList(1,null);
+        userAuthConfig.getRoleList(1,null);
+        userAuthConfig.getPermissionList(1,null);
+        userAuthConfig.getPermissionList(1,null);
+    }
+
+    @Test
+    public void permissionCacheTest() {
+        List<String> roleList = userAuthConfig.getRoleList(1, null);
+        List<String> roleList1 = userAuthConfig.getRoleList(1, null);
+        List<String> permissionList = userAuthConfig.getPermissionList(1, null);
+        List<String> permissionList1 = userAuthConfig.getPermissionList(1, null);
+        log.info("roleList:{}",JSON.toJSONString(roleList));
+        log.info("roleList1:{}",JSON.toJSONString(roleList1));
+        log.info("permissionList:{}",JSON.toJSONString(permissionList));
+        log.info("permissionList1:{}",JSON.toJSONString(permissionList1));
     }
 
 }

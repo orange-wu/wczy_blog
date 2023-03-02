@@ -1,15 +1,20 @@
 package com.my9z.blog;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
+import com.my9z.blog.common.constant.RedisKeyConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RBucket;
 import org.redisson.api.RKeys;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * @description: redis测试
@@ -31,6 +36,13 @@ public class RedisTest {
         RBucket<String> wcz = redissonClient.getBucket("wcz");
         wcz.set("czy");
         log.info("wcz:{}", wcz.get());
+    }
+
+    @Test
+    public void testMap() {
+        String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
+        RMap<String, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
+        log.info("userPermissionCache:{}", JSON.toJSONString(userPermissionCache));
     }
 
 }
