@@ -17,6 +17,7 @@ import com.my9z.blog.common.pojo.req.SaveRoleReq;
 import com.my9z.blog.common.pojo.req.SearchRoleReq;
 import com.my9z.blog.common.pojo.req.UpdateRoleReq;
 import com.my9z.blog.common.pojo.resp.RoleResp;
+import com.my9z.blog.common.util.PageUtil;
 import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
@@ -48,8 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         Page<RoleResp> page = new Page<>(searchRoleReq.getPageNumber(), searchRoleReq.getPageSize());
         //分页模糊查询
         Page<RoleResp> roleRespPage = baseMapper.roleRespPage(page, searchRoleReq.getRoleName());
-        return new WPage<>(roleRespPage.getCurrent(), roleRespPage.getSize(),
-                roleRespPage.getTotal(), roleRespPage.getRecords());
+        return PageUtil.convert(roleRespPage);
     }
 
     @Override

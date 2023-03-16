@@ -17,6 +17,7 @@ import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.resp.ModularResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.common.pojo.resp.ResourceTreeResp;
+import com.my9z.blog.common.util.PageUtil;
 import com.my9z.blog.mapper.ResourceMapper;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.service.auth.ResourceService;
@@ -50,8 +51,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourceEnt
         //根据模块id集合分页查询接口资源
         Page<ResourceResp> page = new Page<>(searchResourceReq.getPageNumber(), searchResourceReq.getPageSize());
         Page<ResourceResp> resourceRespPage = baseMapper.resourceRespPage(page, parentIdList);
-        return new WPage<>(resourceRespPage.getCurrent(), resourceRespPage.getSize(),
-                resourceRespPage.getTotal(), resourceRespPage.getRecords());
+        return PageUtil.convert(resourceRespPage);
     }
 
     @Override
