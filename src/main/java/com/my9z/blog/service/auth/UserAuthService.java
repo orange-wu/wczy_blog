@@ -1,7 +1,10 @@
 package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.SearchUserReq;
+import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 
 import java.util.List;
 
@@ -28,5 +31,14 @@ public interface UserAuthService extends IService<UserAuthEntity> {
      * @return 角色集合
      */
     List<String> userRoleList(Long userId);
+
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param searchUserReq 查询入惨
+     * @return 用户数据分页信息
+     */
+    WPage<UserPageInfoResp> pageUsers(SearchUserReq searchUserReq);
 
 }

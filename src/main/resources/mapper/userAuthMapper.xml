@@ -44,4 +44,44 @@
           AND disable != 1;
     </select>
 
+    <resultMap id="UserPageInfoResp" type="com.my9z.blog.common.pojo.resp.UserPageInfoResp">
+        <id column="id" property="id"/>
+        <result column="avatar" property="avatar"/>
+        <result column="nickname" property="nickname"/>
+        <result column="login_type" property="loginType"/>
+        <result column="ip_address" property="ipAddress"/>
+        <result column="ip_source" property="ipSource"/>
+        <result column="create_time" property="createTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="is_disable" property="disable"/>
+        <collection property="roleList" ofType="com.my9z.blog.common.pojo.dto.RoleIdDto">
+            <id column="role_id" property="id"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserPageInfo" resultMap="UserPageInfoResp">
+        SELECT `user`.id,
+        `user`.avatar,
+        `user`.nickname,
+        `user`.login_type,
+        `user`.ip_address,
+        `user`.ip_source,
+        `user`.create_time,
+        `user`.last_login_time,
+        `user`.`disable`,
+        `role`.id AS role_id,
+        `role`.role_name
+        FROM tb_user_auth `user`
+        LEFT JOIN tb_role `role` ON JSON_CONTAINS(`user`.role_ids, JSON_ARRAY(`role`.id))
+        <where>
+            <if test="param.nickName != null ">
+                `user`.nickname like concat('%',#{param.nickName},'%')
+            </if>
+            <if test="param.loginType != null ">
+                `user`.login_type = #{param.loginType}
+            </if>
+        </where>
+    </select>
+
 </mapper>

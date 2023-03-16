@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.req.SearchResourceReq;
+import com.my9z.blog.common.pojo.req.SearchUserReq;
 import com.my9z.blog.common.pojo.resp.MenuResp;
 import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
+import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 import com.my9z.blog.config.permissions.UserAuthConfig;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
@@ -97,6 +99,14 @@ public class SpringTest {
         log.info("roleList1:{}",JSON.toJSONString(roleList1));
         log.info("permissionList:{}",JSON.toJSONString(permissionList));
         log.info("permissionList1:{}",JSON.toJSONString(permissionList1));
+    }
+
+    @Test
+    public void userPageTest(){
+        SearchUserReq searchUserReq = new SearchUserReq();
+        searchUserReq.setLoginType(1);
+        WPage<UserPageInfoResp> userPageInfoRespWPage = userAuthService.pageUsers(searchUserReq);
+        log.info("userPageInfoRespWPage:{}",JSON.toJSONString(userPageInfoRespWPage));
     }
 
 }

@@ -2,10 +2,15 @@ package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.SearchUserReq;
+import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
+import com.my9z.blog.common.util.PageUtil;
 import com.my9z.blog.mapper.ResourceMapper;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
@@ -58,5 +63,12 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
                 .map(RoleEntity::getRoleLabel)
                 .filter(StrUtil::isNotBlank)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public WPage<UserPageInfoResp> pageUsers(SearchUserReq searchUserReq) {
+        Page<UserPageInfoResp> page = new Page<>(searchUserReq.getPageNumber(), searchUserReq.getPageSize());
+        Page<UserPageInfoResp> userPageInfoRespPage = baseMapper.selectUserPageInfo(page, searchUserReq);
+        return PageUtil.convert(userPageInfoRespPage);
     }
 }

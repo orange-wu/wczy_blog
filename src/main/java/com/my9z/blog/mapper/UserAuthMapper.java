@@ -1,7 +1,10 @@
 package com.my9z.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
+import com.my9z.blog.common.pojo.req.SearchUserReq;
+import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +25,15 @@ public interface UserAuthMapper extends BaseMapper<UserAuthEntity> {
      * @return 用户列表
      */
     List<UserAuthEntity> selectUsrByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param page  分页信息
+     * @param param 查询参数
+     * @return 用户数据分页信息
+     */
+    Page<UserPageInfoResp> selectUserPageInfo(@Param(("page")) Page<UserPageInfoResp> page,
+                                              @Param("param") SearchUserReq param);
 
 }
