@@ -6,6 +6,7 @@ import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.req.SearchUserReq;
+import com.my9z.blog.common.pojo.req.UpdateUserRoleReq;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
 import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 import com.my9z.blog.service.admin.AdminUserService;
@@ -14,7 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @description: 用户相关接口
@@ -41,5 +46,12 @@ public class UserController {
     @SaCheckPermission(value = "users-list", orRole = "admin")
     public Result<WPage<UserPageInfoResp>> listUsers(SearchUserReq searchUserReq) {
         return Result.ok(userAuthService.pageUsers(searchUserReq));
+    }
+
+    @PutMapping("admin/updateUserRole")
+    @SaCheckPermission(value = "user-role-update",orRole="admin")
+    public Result<?> updateUserRole(@RequestBody @Valid UpdateUserRoleReq updateUserRoleReq){
+        userAuthService.updateUserRole(updateUserRoleReq);
+        return Result.ok();
     }
 }

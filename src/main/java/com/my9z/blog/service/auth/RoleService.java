@@ -2,11 +2,14 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleIdDto;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
 import com.my9z.blog.common.pojo.req.SearchRoleReq;
 import com.my9z.blog.common.pojo.req.UpdateRoleReq;
 import com.my9z.blog.common.pojo.resp.RoleResp;
+
+import java.util.List;
 
 /**
  * @description: 角色service
@@ -43,4 +46,11 @@ public interface RoleService extends IService<RoleEntity> {
      * @param roleId 角色id
      */
     void deleteRoleById(Long roleId);
+
+    /**
+     * 查询所有启用状态下的角色名 角色id
+     *
+     * @return {@link List<RoleIdDto>} 角色id实体类
+     */
+    List<RoleIdDto> listEnableRoleNameAndId();
 }

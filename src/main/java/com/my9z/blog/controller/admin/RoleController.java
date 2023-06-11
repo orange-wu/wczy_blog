@@ -3,6 +3,7 @@ package com.my9z.blog.controller.admin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.my9z.blog.common.pojo.Result;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleIdDto;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
 import com.my9z.blog.common.pojo.req.SearchRoleReq;
 import com.my9z.blog.common.pojo.req.UpdateRoleReq;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @description: 角色相关接口
@@ -82,6 +84,16 @@ public class RoleController {
     public Result<?> deleteRoleById(@PathVariable("roleId") Long roleId) {
         roleService.deleteRoleById(roleId);
         return Result.ok();
+    }
+
+    /**
+     * 查询角色id 角色名
+     * @return {@link List<RoleIdDto>}
+     */
+    @GetMapping("/roleIdList")
+    @SaCheckPermission(value = "roles-id-list", orRole = "admin")
+    public Result<List<RoleIdDto>> listEnableRoleNameAndId() {
+        return Result.ok(roleService.listEnableRoleNameAndId());
     }
 
 }

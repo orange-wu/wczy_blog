@@ -8,11 +8,9 @@ import com.my9z.blog.common.enums.StatusCodeEnum;
 import com.my9z.blog.common.exception.BusinessException;
 import com.my9z.blog.common.pojo.Result;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.stream.Collectors;
@@ -38,7 +36,7 @@ public class ExceptionAdviceConfig {
     }
 
     /**
-     * 处理服务异常
+     * 未登录异常
      *
      * @param e 异常
      * @return 接口异常信息
@@ -48,6 +46,12 @@ public class ExceptionAdviceConfig {
         return Result.fail(StatusCodeEnum.NO_LOGIN);
     }
 
+    /**
+     * 没权限异常
+     *
+     * @param e 异常
+     * @return 接口异常信息
+     */
     @ExceptionHandler(value = NotPermissionException.class)
     public Result<?> errorHandler(NotPermissionException e) {
         return Result.fail(StatusCodeEnum.AUTHORIZED);
@@ -59,7 +63,6 @@ public class ExceptionAdviceConfig {
      * @param e 异常
      * @return 接口异常信息
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result<?> errorHandler(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();

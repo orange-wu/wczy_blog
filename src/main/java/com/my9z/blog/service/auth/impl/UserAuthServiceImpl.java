@@ -9,6 +9,7 @@ import com.my9z.blog.common.pojo.entity.auth.ResourceEntity;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.req.SearchUserReq;
+import com.my9z.blog.common.pojo.req.UpdateUserRoleReq;
 import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 import com.my9z.blog.common.util.PageUtil;
 import com.my9z.blog.mapper.ResourceMapper;
@@ -70,5 +71,15 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
         Page<UserPageInfoResp> page = new Page<>(searchUserReq.getPageNumber(), searchUserReq.getPageSize());
         Page<UserPageInfoResp> userPageInfoRespPage = baseMapper.selectUserPageInfo(page, searchUserReq);
         return PageUtil.convert(userPageInfoRespPage);
+    }
+
+    @Override
+    public void updateUserRole(UpdateUserRoleReq updateUserRoleReq) {
+        UserAuthEntity userAuthEntity = new UserAuthEntity();
+        userAuthEntity.setId(updateUserRoleReq.getId());
+        userAuthEntity.setNickname(updateUserRoleReq.getNickname());
+        userAuthEntity.setDisable(updateUserRoleReq.getDisable());
+        userAuthEntity.setRoleIds(updateUserRoleReq.getRoleIdList());
+        baseMapper.updateById(userAuthEntity);
     }
 }

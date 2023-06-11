@@ -53,7 +53,7 @@
         <result column="ip_source" property="ipSource"/>
         <result column="create_time" property="createTime"/>
         <result column="last_login_time" property="lastLoginTime"/>
-        <result column="is_disable" property="disable"/>
+        <result column="disable" property="disable"/>
         <collection property="roleList" ofType="com.my9z.blog.common.pojo.dto.RoleIdDto">
             <id column="role_id" property="id"/>
             <result column="role_name" property="roleName"/>

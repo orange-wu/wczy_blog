@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.constant.RedisKeyConstant;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleIdDto;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,6 +118,21 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             throw ErrorCodeEnum.ROLE_USER_EXIST.buildException();
         }
         baseMapper.deleteById(roleId);
+    }
+
+    @Override
+    public List<RoleIdDto> listEnableRoleNameAndId() {
+        List<RoleEntity> roleEntities = baseMapper.selectList(new LambdaQueryWrapper<RoleEntity>()
+                .eq(RoleEntity::getDisable, Boolean.FALSE)
+                .select(RoleEntity::getId, RoleEntity::getRoleName));
+        if (CollUtil.isEmpty(roleEntities)) return null;
+        //对象转换
+        return new ArrayList<>(CollUtil.trans(roleEntities, (roleEntity) -> {
+            RoleIdDto roleIdDto = new RoleIdDto();
+            roleIdDto.setId(roleEntity.getId());
+            roleIdDto.setRoleName(roleEntity.getRoleName());
+            return roleIdDto;
+        }));
     }
 
     /**
