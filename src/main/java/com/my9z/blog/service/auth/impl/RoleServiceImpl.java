@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.my9z.blog.common.constant.RedisKeyConstant;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleAuthDto;
 import com.my9z.blog.common.pojo.dto.RoleIdDto;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.entity.auth.UserAuthEntity;
@@ -133,6 +134,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             roleIdDto.setRoleName(roleEntity.getRoleName());
             return roleIdDto;
         }));
+    }
+
+    @Override
+    public List<RoleAuthDto> roleAuthList() {
+        return baseMapper.roleAuthList();
     }
 
     /**

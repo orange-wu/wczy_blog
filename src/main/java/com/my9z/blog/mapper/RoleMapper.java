@@ -2,6 +2,7 @@ package com.my9z.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.my9z.blog.common.pojo.dto.RoleAuthDto;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.resp.RoleResp;
 import org.apache.ibatis.annotations.Param;
@@ -49,4 +50,11 @@ public interface RoleMapper extends BaseMapper<RoleEntity> {
      * @return 角色集合
      */
     List<RoleEntity> userRoleList(@Param("userId") Long userId);
+
+    /**
+     * 获取所有角色的权限和用户
+     *
+     * @return {@link List<RoleAuthDto>}
+     */
+    List<RoleAuthDto> roleAuthList();
 }

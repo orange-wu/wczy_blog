@@ -5,14 +5,19 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.my9z.blog.common.constant.RedisKeyConstant;
-import com.my9z.blog.service.auth.UserAuthService;
+import com.my9z.blog.common.pojo.dto.RoleUserDto;
+import org.redisson.api.RBucket;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @description: 用户权限配置类
@@ -22,12 +27,10 @@ import java.util.List;
 @Component
 public class UserAuthConfig implements StpInterface {
 
-    // TODO: 2023/2/28 每次接口鉴权都要去查 改为redis
+
     @Autowired
     private RedissonClient redissonClient;
 
-    @Autowired
-    private UserAuthService userAuthService;
 
     /**
      * 返回指定账号id所拥有的权限码集合
@@ -38,18 +41,8 @@ public class UserAuthConfig implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
-        RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
-        long userId = getUserId(loginId);
         //从缓存中查寻该用户权限码
-        if (CollUtil.isNotEmpty(userPermissionCache) && userPermissionCache.containsKey(userId)) {
-            return userPermissionCache.get(userId);
-        }
-        //缓存中没有从表中查询
-        List<String> permissionList = userAuthService.userPermissionList(userId);
-        //存入缓存
-        userPermissionCache.fastPut(userId, permissionList);
-        return permissionList;
+        return getUserPermissionList(getUserId(loginId));
     }
 
     /**
@@ -61,18 +54,8 @@ public class UserAuthConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        String userRoleKey = RedisKeyConstant.getUserRoleKey();
-        RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
-        long userId = getUserId(loginId);
         //从缓存中查寻该用户角色
-        if (CollUtil.isNotEmpty(userRoleCache) && userRoleCache.containsKey(userId)) {
-            return userRoleCache.get(userId);
-        }
-        //缓存中没有从表中查询
-        List<String> roleList = userAuthService.userRoleList(userId);
-        //存入缓存
-        userRoleCache.fastPut(userId, roleList);
-        return roleList;
+        return getUserRoleList(getUserId(loginId));
     }
 
     /**
@@ -81,8 +64,42 @@ public class UserAuthConfig implements StpInterface {
      * @param loginId object类型的id
      * @return long类型的id
      */
-    private static long getUserId(Object loginId) {
+    private Long getUserId(Object loginId) {
         String loginIdStr = StrUtil.str(loginId, StandardCharsets.UTF_8);
         return NumberUtil.parseLong(loginIdStr);
     }
+
+    /**
+     * 获取当前用户的角色集合
+     *
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    private List<String> getUserRoleList(Long userId) {
+        String roleUserKey = RedisKeyConstant.getRoleUserKey();
+        RBucket<List<RoleUserDto>> roleUserCacheList = redissonClient.getBucket(roleUserKey);
+        return roleUserCacheList.get().stream()
+                .filter(roleUser -> CollUtil.contains(roleUser.getUseIds(), userId))
+                .map(RoleUserDto::getRoleLabel)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getUserPermissionList(Long userId) {
+        //查询用户的角色id
+        RBucket<List<RoleUserDto>> roleUserCacheList = redissonClient.getBucket(RedisKeyConstant.getRoleUserKey());
+        List<Long> userRoleId = roleUserCacheList.get().stream()
+                .filter(roleUser -> CollUtil.contains(roleUser.getUseIds(), userId))
+                .map(RoleUserDto::getId)
+                .collect(Collectors.toList());
+        //取角色拥有资源权限的交集
+        RMap<Long, List<String>> rolePermissionCache = redissonClient.getMap(RedisKeyConstant.getRoleAuthKey());
+        Set<String> permissionSet = new HashSet<>();
+        for (Long roleId : userRoleId) {
+            if (!rolePermissionCache.containsKey(roleId)) continue;
+            permissionSet.addAll(rolePermissionCache.get(roleId));
+        }
+        return new ArrayList<>(permissionSet);
+    }
+
+
 }

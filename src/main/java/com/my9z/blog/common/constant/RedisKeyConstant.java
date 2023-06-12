@@ -36,4 +36,22 @@ public interface RedisKeyConstant {
     static String getUserRoleKey() {
         return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, USER, ROLE);
     }
+
+    /**
+     * 获取角色权限缓存的keu
+     *
+     * @return 角色权限缓存的redis key
+     */
+    static String getRoleAuthKey() {
+        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, ROLE, PERMISSION);
+    }
+
+    /**
+     * 获取角色角色缓存的keu
+     *
+     * @return 角色角色缓存的redis key
+     */
+    static String getRoleUserKey() {
+        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, ROLE, USER);
+    }
 }

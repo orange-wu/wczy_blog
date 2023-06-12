@@ -14,7 +14,6 @@
         <result column="resource_ids" property="resourceIds"
                 typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
     </resultMap>
-
     <select id="selectCountMenuId" resultMap="RoleEntityMap">
         SELECT role_name, role_label, menu_ids, resource_ids, disable, create_time, update_time
         FROM tb_role
@@ -40,7 +39,6 @@
         <result column="resource_ids" property="resourceIds"
                 typeHandler="com.my9z.blog.config.mptypehandler.LongListToJsonTypeHandler"/>
     </resultMap>
-
     <select id="roleRespPage" resultMap="RoleRespMap">
         SELECT id, role_name, role_label, menu_ids, resource_ids, disable, create_time
         FROM tb_role
@@ -65,6 +63,29 @@
         WHERE `user`.id = ${userId}
           AND `user`.DISABLE != 1
           AND `role`.DISABLE != 1
+    </select>
+
+    <resultMap id="RoleAuthMap" type="com.my9z.blog.common.pojo.dto.RoleAuthDto">
+        <id column="id" property="id"/>
+        <result column="role_label" property="roleLabel"/>
+        <collection property="permissionList" ofType="java.lang.String">
+            <id column="permission"/>
+        </collection>
+        <collection property="useIds" ofType="java.lang.Long">
+            <id column="user_id"/>
+        </collection>
+    </resultMap>
+    <select id="roleAuthList" resultMap="RoleAuthMap">
+        SELECT `role`.id,
+               `role`.role_label,
+               `resource`.permission,
+               `user`.id AS 'user_id'
+        FROM tb_role `role`
+                 LEFT JOIN tb_user_auth `user` ON JSON_CONTAINS(`user`.role_ids, JSON_ARRAY(`role`.id))
+                 LEFT JOIN tb_resource `resource` ON JSON_CONTAINS(`role`.resource_ids, JSON_ARRAY(`resource`.id))
+            AND user.disable != 1
+            AND role.disable != 1
+            AND resource.modular != 1
     </select>
 
 </mapper>

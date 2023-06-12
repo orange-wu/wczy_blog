@@ -2,6 +2,7 @@ package com.my9z.blog.service.auth;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleAuthDto;
 import com.my9z.blog.common.pojo.dto.RoleIdDto;
 import com.my9z.blog.common.pojo.entity.auth.RoleEntity;
 import com.my9z.blog.common.pojo.req.SaveRoleReq;
@@ -53,4 +54,11 @@ public interface RoleService extends IService<RoleEntity> {
      * @return {@link List<RoleIdDto>} 角色id实体类
      */
     List<RoleIdDto> listEnableRoleNameAndId();
+
+    /**
+     * 获取所有角色的权限和用户
+     *
+     * @return {@link List<RoleAuthDto>}
+     */
+    List<RoleAuthDto> roleAuthList();
 }

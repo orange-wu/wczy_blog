@@ -2,6 +2,7 @@ package com.my9z.blog;
 
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.WPage;
+import com.my9z.blog.common.pojo.dto.RoleAuthDto;
 import com.my9z.blog.common.pojo.req.LoginUserReq;
 import com.my9z.blog.common.pojo.req.SearchResourceReq;
 import com.my9z.blog.common.pojo.req.SearchUserReq;
@@ -10,7 +11,9 @@ import com.my9z.blog.common.pojo.resp.ResourceResp;
 import com.my9z.blog.common.pojo.resp.UserInfoResp;
 import com.my9z.blog.common.pojo.resp.UserMenuResp;
 import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
+import com.my9z.blog.config.permissions.RoleAuthCacheRefreshConfig;
 import com.my9z.blog.config.permissions.UserAuthConfig;
+import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.ResourceService;
@@ -109,4 +112,19 @@ public class SpringTest {
         log.info("userPageInfoRespWPage:{}",JSON.toJSONString(userPageInfoRespWPage));
     }
 
+    @Autowired
+    private RoleMapper roleMapper;
+    @Test
+    public void roleAuthSearchTest(){
+        List<RoleAuthDto> roleAuthDtoList = roleMapper.roleAuthList();
+        log.info("roleAuth:{}",JSON.toJSONString(roleAuthDtoList));
+    }
+
+    @Autowired
+    private RoleAuthCacheRefreshConfig roleAuthCacheRefreshConfig;
+
+    @Test
+    public void roleAuthCacheTest(){
+        roleAuthCacheRefreshConfig.afterPropertiesSet();
+    }
 }
