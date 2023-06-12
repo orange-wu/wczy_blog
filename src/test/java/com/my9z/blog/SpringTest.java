@@ -81,18 +81,6 @@ public class SpringTest {
     }
 
     @Test
-    public void permissionTest() {
-        List<String> permissionList = userAuthService.userPermissionList(995L);
-        log.info("permissionList:{}",JSON.toJSONString(permissionList));
-        List<String> roleList = userAuthService.userRoleList(995L);
-        log.info("roleList:{}",JSON.toJSONString(roleList));
-        userAuthConfig.getRoleList(1,null);
-        userAuthConfig.getRoleList(1,null);
-        userAuthConfig.getPermissionList(1,null);
-        userAuthConfig.getPermissionList(1,null);
-    }
-
-    @Test
     public void permissionCacheTest() {
         List<String> roleList = userAuthConfig.getRoleList(1, null);
         List<String> roleList1 = userAuthConfig.getRoleList(1, null);

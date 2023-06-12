@@ -22,24 +22,4 @@
         ORDER BY parent_id
     </select>
 
-    <select id="userPermissionList" resultType="com.my9z.blog.common.pojo.entity.auth.ResourceEntity">
-        SELECT resource.id,
-               resource.resource_name,
-               resource.url,
-               resource.permission,
-               resource.modular_name,
-               resource.request_method,
-               resource.parent_id,
-               resource.anonymous,
-               resource.modular,
-               resource.create_time
-        FROM tb_user_auth user
-                 LEFT JOIN tb_role role ON JSON_CONTAINS(user.role_ids, JSON_ARRAY(role.id))
-                 LEFT JOIN tb_resource resource ON JSON_CONTAINS(role.resource_ids, JSON_ARRAY(resource.id))
-        WHERE user.id = ${userId}
-          AND user.disable != 1
-          AND role.disable != 1
-          AND resource.modular != 1
-    </select>
-
 </mapper>

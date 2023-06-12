@@ -27,13 +27,4 @@ public interface ResourceMapper extends BaseMapper<ResourceEntity> {
     Page<ResourceResp> resourceRespPage(@Param(("page")) Page<ResourceResp> page,
                                         @Param("parentIdList") List<Long> parentIdList);
 
-
-    /**
-     * 获取用户的权限码集合
-     *
-     * @param userId 用户id
-     * @return 权限码集合
-     */
-    List<ResourceEntity> userPermissionList(@Param("userId") Long userId);
-
 }
