@@ -36,7 +36,7 @@ public class UpdateUserRoleReq {
      * 用户角色
      */
     @NotEmpty(message = "用户角色不能为空")
-    private List<Long> roleIdList;
+    private List<Long> roleIds;
 
 
 }
