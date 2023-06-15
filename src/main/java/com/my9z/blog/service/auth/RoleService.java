@@ -58,7 +58,8 @@ public interface RoleService extends IService<RoleEntity> {
     /**
      * 获取所有角色的权限和用户
      *
+     * @param roleLabelList 角色标识，为空则查询所有角色
      * @return {@link List<RoleAuthDto>}
      */
-    List<RoleAuthDto> roleAuthList();
+    List<RoleAuthDto> roleAuthList(List<String> roleLabelList);
 }

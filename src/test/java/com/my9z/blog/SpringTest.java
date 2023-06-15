@@ -17,6 +17,7 @@ import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.service.admin.AdminUserService;
 import com.my9z.blog.service.auth.MenuService;
 import com.my9z.blog.service.auth.ResourceService;
+import com.my9z.blog.service.auth.SystemAuthService;
 import com.my9z.blog.service.auth.UserAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class SpringTest {
     private RoleMapper roleMapper;
     @Test
     public void roleAuthSearchTest(){
-        List<RoleAuthDto> roleAuthDtoList = roleMapper.roleAuthList();
+        List<RoleAuthDto> roleAuthDtoList = roleMapper.roleAuthList(null);
         log.info("roleAuth:{}",JSON.toJSONString(roleAuthDtoList));
     }
 
@@ -114,5 +115,17 @@ public class SpringTest {
     @Test
     public void roleAuthCacheTest(){
         roleAuthCacheRefreshConfig.afterPropertiesSet();
+    }
+
+    @Autowired
+    private SystemAuthService systemAuthService;
+
+    @Test
+    public void systemAuthCacheTest(){
+        List<String> strings1 = systemAuthService.selectUserRoleLabelFromCache(1L);
+        log.info("aaaaaa:{}",strings1);
+        systemAuthService.selectUserRoleLabelAndSaveCache(1L);
+        List<String> strings = systemAuthService.selectUserRoleLabelFromCache(1L);
+        log.info("bbbbbb:{}",strings);
     }
 }

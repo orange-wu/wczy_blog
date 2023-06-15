@@ -40,7 +40,7 @@ public class RedisTest {
 
     @Test
     public void testMap() {
-        String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
+        String userPermissionKey = RedisKeyConstant.getRoleAuthKey();
         RMap<String, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
         log.info("userPermissionCache:{}", JSON.toJSONString(userPermissionCache));
     }

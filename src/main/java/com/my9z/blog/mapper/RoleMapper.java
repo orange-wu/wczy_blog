@@ -44,9 +44,10 @@ public interface RoleMapper extends BaseMapper<RoleEntity> {
     Page<RoleResp> roleRespPage(@Param(("page")) Page<RoleResp> page, @Param("roleName") String roleName);
 
     /**
-     * 获取所有角色的权限和用户
+     * 获取角色的权限和用户
      *
+     * @param roleLabelList 角色标识，为空则查询所有角色
      * @return {@link List<RoleAuthDto>}
      */
-    List<RoleAuthDto> roleAuthList();
+    List<RoleAuthDto> roleAuthList(@Param("roleLabelList") List<String> roleLabelList);
 }

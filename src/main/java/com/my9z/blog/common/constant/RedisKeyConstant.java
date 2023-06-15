@@ -20,21 +20,12 @@ public interface RedisKeyConstant {
     String ROLE = "role";
 
     /**
-     * 获取用户权限码缓存的keu
-     *
-     * @return 用户权限码的redis key
-     */
-    static String getUserPermissionKey() {
-        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, USER, PERMISSION);
-    }
-
-    /**
      * 获取用户角色缓存的keu
      *
      * @return 用户角色缓存的redis key
      */
-    static String getUserRoleKey() {
-        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, USER, ROLE);
+    static String getUserRoleKey(Long userId) {
+        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, USER, ROLE,userId);
     }
 
     /**
@@ -46,12 +37,4 @@ public interface RedisKeyConstant {
         return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, ROLE, PERMISSION);
     }
 
-    /**
-     * 获取角色角色缓存的keu
-     *
-     * @return 角色角色缓存的redis key
-     */
-    static String getRoleUserKey() {
-        return StrUtil.join(StrUtil.COLON, WCZY_BLOG, AUTH, ROLE, USER);
-    }
 }

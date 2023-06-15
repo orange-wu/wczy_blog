@@ -84,4 +84,11 @@
         </where>
     </select>
 
+    <select id="selectRoleLabelByUserId" resultType="java.lang.String">
+        SELECT `role`.role_label
+        FROM tb_user_auth `user`
+                 LEFT JOIN tb_role `role` ON JSON_CONTAINS(`user`.role_ids, JSON_ARRAY(`role`.id))
+        WHERE `user`.id = ${userId}
+    </select>
+
 </mapper>

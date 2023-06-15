@@ -1,22 +1,30 @@
 package com.my9z.blog.common.pojo.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 /**
- * @description: 用户权限dto
+ * @description: 角色权限dto
  * @author: wczy9
  * @createTime: 2023-06-12  17:21
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class RoleAuthDto extends RoleUserDto {
+public class RoleAuthDto {
 
     /**
-     * 资源id集合
+     * 角色id
+     */
+    private Long id;
+
+    /**
+     * 接口权限集合
      */
     private List<String> permissionList;
+
+    /**
+     * 角色名
+     */
+    private String roleLabel;
 
 }

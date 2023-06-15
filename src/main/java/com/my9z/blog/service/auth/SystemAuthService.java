@@ -1,6 +1,7 @@
 package com.my9z.blog.service.auth;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @description: 系统权限service
@@ -27,5 +28,30 @@ public interface SystemAuthService {
      * @param roleIdColl 角色id集合
      */
     void deleteRolePermissionCache(Collection<Long> roleIdColl);
+
+    /**
+     * 从缓存查询用户的角色类型
+     *
+     * @param userId 用户id
+     * @return 角色类型
+     */
+    List<String> selectUserRoleLabelFromCache(Long userId);
+
+
+    /**
+     * 从数据库查询用户的角色类型，并存储redis
+     *
+     * @param userId 用户id
+     * @return 角色类型
+     */
+    List<String> selectUserRoleLabelAndSaveCache(Long userId);
+
+    /**
+     * 从缓存查询角色的接口权限，未命中缓存的角色查询数据库，并且存储redis
+     *
+     * @param roleLabelList 角色标识
+     * @return 接口权限
+     */
+    List<String> selectUserPermissionFromCacheAndSaveCache(List<String> roleLabelList);
 
 }

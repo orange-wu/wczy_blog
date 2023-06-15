@@ -7,6 +7,8 @@ import com.my9z.blog.common.pojo.req.SearchUserReq;
 import com.my9z.blog.common.pojo.req.UpdateUserRoleReq;
 import com.my9z.blog.common.pojo.resp.UserPageInfoResp;
 
+import java.util.List;
+
 /**
  * @description: 用户账号service
  * @author: wczy9
@@ -28,4 +30,12 @@ public interface UserAuthService extends IService<UserAuthEntity> {
      * @param updateUserRoleReq 修改入参
      */
     void updateUserRole(UpdateUserRoleReq updateUserRoleReq);
+
+    /**
+     * 查询用户的角色类型
+     *
+     * @param userId 用户id
+     * @return 角色类型
+     */
+    List<String> selectRoleLabelByUserId(Long userId);
 }

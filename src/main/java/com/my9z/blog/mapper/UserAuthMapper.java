@@ -36,4 +36,11 @@ public interface UserAuthMapper extends BaseMapper<UserAuthEntity> {
     Page<UserPageInfoResp> selectUserPageInfo(@Param(("page")) Page<UserPageInfoResp> page,
                                               @Param("param") SearchUserReq param);
 
+    /**
+     * 查询用户的角色类型
+     *
+     * @param userId 用户id
+     * @return 角色类型
+     */
+    List<String> selectRoleLabelByUserId(@Param("userId") Long userId);
 }

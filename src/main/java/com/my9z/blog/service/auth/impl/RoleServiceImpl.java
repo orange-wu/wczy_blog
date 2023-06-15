@@ -2,13 +2,11 @@ package com.my9z.blog.service.auth.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.my9z.blog.common.constant.RedisKeyConstant;
 import com.my9z.blog.common.enums.ErrorCodeEnum;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.dto.RoleAuthDto;
@@ -24,7 +22,6 @@ import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.auth.RoleService;
-import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,8 +94,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                 || menuUpdate || resourceUpdate || disableUpdate) {
             baseMapper.updateById(newRole);
         }
-        //当菜单权限或者接口权限出现变更，或者角色从启用-->禁用，需要把对应的用户强制下线
-        if (menuUpdate || resourceUpdate || disableUpdate) {
+        //当接口权限出现变更，或者角色从启用-->禁用，需要把对应的用户强制下线
+        if (resourceUpdate || disableUpdate) {
             //找到当前角色的用户
             List<UserAuthEntity> userAuthEntities = userAuthMapper.selectUsrByRoleId(newRole.getId());
             List<Long> userIdList = userAuthEntities.stream()
@@ -137,8 +134,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     }
 
     @Override
-    public List<RoleAuthDto> roleAuthList() {
-        return baseMapper.roleAuthList();
+    public List<RoleAuthDto> roleAuthList(List<String> roleLabelList) {
+        return baseMapper.roleAuthList(roleLabelList);
     }
 
     /**
@@ -149,18 +146,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
      * @param userIdList     用户id集合
      */
     private void deleteUserAuthCache(boolean resourceUpdate, boolean disableUpdate, List<Long> userIdList) {
-        //用户接口权限缓存删除
-        if (resourceUpdate) {
-            String userPermissionKey = RedisKeyConstant.getUserPermissionKey();
-            RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
-            userPermissionCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
-        }
-        //用户角色缓存删除
-        if (disableUpdate) {
-            String userRoleKey = RedisKeyConstant.getUserRoleKey();
-            RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
-            userRoleCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
-        }
+        // TODO: 2023/6/15  
+//        //用户接口权限缓存删除
+//        if (resourceUpdate) {
+//            String userPermissionKey = RedisKeyConstant.getRoleAuthKey();
+//            RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
+//            userPermissionCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
+//        }
+//        //用户角色缓存删除
+//        if (disableUpdate) {
+//            String userRoleKey = RedisKeyConstant.getUserRoleKey(1);
+//            RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
+//            userRoleCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
+//        }
     }
 
 }

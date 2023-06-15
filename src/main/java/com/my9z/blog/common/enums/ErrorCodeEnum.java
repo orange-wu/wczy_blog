@@ -18,6 +18,7 @@ public enum ErrorCodeEnum {
     LOGIN_SA_TOKEN_ERROR(1001, "登陆失败"),
     USER_IS_DISABLE(1002, "账号已经被禁用"),
     USER_INFO_IS_ABNORMAL(1003, "当前用户信息异常"),
+    ROLE_CACHE_IS_ERROR(1004, "角色的接口权限缓存异常"),
 
     /***** 菜单相关 *****/
     MENU_IS_USED_BY_ROLE(2000, "当前菜单被用户:{}关联"),

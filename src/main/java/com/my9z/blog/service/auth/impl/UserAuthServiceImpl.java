@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -77,5 +78,11 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
         }
         //删除对应角色的用户缓存。
         if (CollUtil.isNotEmpty(updateRoleSet)) systemAuthService.deleteRoleUserCache(updateRoleSet);
+    }
+
+    @Override
+    public List<String> selectRoleLabelByUserId(Long userId) {
+        if (userId == null) return null;
+        return baseMapper.selectRoleLabelByUserId(userId);
     }
 }
