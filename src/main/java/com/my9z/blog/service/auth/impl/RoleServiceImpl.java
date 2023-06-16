@@ -22,6 +22,7 @@ import com.my9z.blog.common.util.UserUtil;
 import com.my9z.blog.mapper.RoleMapper;
 import com.my9z.blog.mapper.UserAuthMapper;
 import com.my9z.blog.service.auth.RoleService;
+import com.my9z.blog.service.auth.SystemAuthService;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     private RedissonClient redissonClient;
     @Autowired
     private UserAuthMapper userAuthMapper;
+    @Autowired
+    private SystemAuthService systemAuthService;
 
     @Override
     public WPage<RoleResp> listRoles(SearchRoleReq searchRoleReq) {
@@ -103,8 +106,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                     .collect(Collectors.toList());
             //强制下线该用户
             UserUtil.logout(userIdList);
-            //删除相关用户权限缓存
-            deleteUserAuthCache(resourceUpdate, disableUpdate, userIdList);
+            //角色接口权限缓存删除
+            if (resourceUpdate) systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(updateRoleReq.getId()));
+            //用户角色缓存删除
+            if (disableUpdate) systemAuthService.deleteUserRoleCache(userIdList);
         }
     }
 
@@ -116,6 +121,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             throw ErrorCodeEnum.ROLE_USER_EXIST.buildException();
         }
         baseMapper.deleteById(roleId);
+        //角色接口权限缓存删除
+        systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(roleId));
     }
 
     @Override
@@ -136,29 +143,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     @Override
     public List<RoleAuthDto> roleAuthList(List<String> roleLabelList) {
         return baseMapper.roleAuthList(roleLabelList);
-    }
-
-    /**
-     * 删除用户的接口资源和用户权限缓存
-     *
-     * @param resourceUpdate 是否修改接口资源
-     * @param disableUpdate  是否禁用用户
-     * @param userIdList     用户id集合
-     */
-    private void deleteUserAuthCache(boolean resourceUpdate, boolean disableUpdate, List<Long> userIdList) {
-        // TODO: 2023/6/15  
-//        //用户接口权限缓存删除
-//        if (resourceUpdate) {
-//            String userPermissionKey = RedisKeyConstant.getRoleAuthKey();
-//            RMap<Long, List<String>> userPermissionCache = redissonClient.getMap(userPermissionKey);
-//            userPermissionCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
-//        }
-//        //用户角色缓存删除
-//        if (disableUpdate) {
-//            String userRoleKey = RedisKeyConstant.getUserRoleKey(1);
-//            RMap<Long, List<String>> userRoleCache = redissonClient.getMap(userRoleKey);
-//            userRoleCache.fastRemove(ArrayUtil.toArray(userIdList, Long.class));
-//        }
     }
 
 }

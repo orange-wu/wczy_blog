@@ -16,11 +16,11 @@ public interface SystemAuthService {
     void refreshAuthAllCache();
 
     /**
-     * 删除指定角色id的用户权限缓存
+     * 删除指定用户id的角色权限缓存
      *
-     * @param roleIdColl 角色id集合
+     * @param userIdColl 用户id集合
      */
-    void deleteRoleUserCache(Collection<Long> roleIdColl);
+    void deleteUserRoleCache(Collection<Long> userIdColl);
 
     /**
      * 删除指定角色id的接口权限缓存

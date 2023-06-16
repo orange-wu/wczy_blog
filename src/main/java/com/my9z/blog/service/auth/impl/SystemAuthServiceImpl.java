@@ -50,8 +50,13 @@ public class SystemAuthServiceImpl implements SystemAuthService {
     }
 
     @Override
-    public void deleteRoleUserCache(Collection<Long> roleIdColl) {
-
+    public void deleteUserRoleCache(Collection<Long> userIdColl) {
+        if (CollUtil.isEmpty(userIdColl)) return;
+        userIdColl.forEach(userId -> {
+            String userRoleKey = RedisKeyConstant.getUserRoleKey(userId);
+            RList<String> userRoleCache = redissonClient.getList(userRoleKey);
+            userRoleCache.delete();
+        });
     }
 
     @Override

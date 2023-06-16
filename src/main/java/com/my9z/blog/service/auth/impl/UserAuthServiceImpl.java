@@ -64,20 +64,10 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuthEnt
             UserUtil.logout(CollUtil.newArrayList(updateUserRoleReq.getId()));
         //判断是否需要更改权限缓存
         Set<Long> updateRoleSet = new HashSet<>();
-        if (disableUpdate) {
-            if (newUserAuth.getDisable()) {
-                //用户：启用==>禁用，oldUserAuth的角色需要删除缓存
-                updateRoleSet.addAll(oldUserAuth.getRoleIds());
-            } else {
-                //用户：禁用==>启用，newUserAuth的角色需要删除缓存
-                updateRoleSet.addAll(newUserAuth.getRoleIds());
-            }
-        } else if (roleUpdate) {
-            //用户禁用状态未变，角色变化，则两者的角色交集需要删除缓存
-            updateRoleSet.addAll(CollUtil.disjunction(newUserAuth.getRoleIds(), oldUserAuth.getRoleIds()));
+        if (disableUpdate || roleUpdate) {
+            //用户角色缓存删除
+            systemAuthService.deleteUserRoleCache(CollUtil.newArrayList(updateUserRoleReq.getId()));
         }
-        //删除对应角色的用户缓存。
-        if (CollUtil.isNotEmpty(updateRoleSet)) systemAuthService.deleteRoleUserCache(updateRoleSet);
     }
 
     @Override

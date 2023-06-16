@@ -1,5 +1,6 @@
 package com.my9z.blog;
 
+import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson.JSON;
 import com.my9z.blog.common.pojo.WPage;
 import com.my9z.blog.common.pojo.dto.RoleAuthDto;
@@ -127,5 +128,6 @@ public class SpringTest {
         systemAuthService.selectUserRoleLabelAndSaveCache(1L);
         List<String> strings = systemAuthService.selectUserRoleLabelFromCache(1L);
         log.info("bbbbbb:{}",strings);
+        systemAuthService.deleteUserRoleCache(CollUtil.newArrayList(1L));
     }
 }
