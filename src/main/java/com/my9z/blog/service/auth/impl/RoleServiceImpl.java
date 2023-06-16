@@ -89,15 +89,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         boolean menuUpdate = ObjectUtil.equals(newRole.getMenuIds(), oldRole.getMenuIds());
         //接口资源权限是否修改
         boolean resourceUpdate = ObjectUtil.equals(newRole.getResourceIds(), oldRole.getResourceIds());
-        //角色是否从启用修改为禁用
-        boolean disableUpdate = oldRole.getDisable() == Boolean.FALSE && newRole.getDisable() == Boolean.TRUE;
+        //角色状态是否变更
+        boolean disableUpdate = ObjectUtil.equals(newRole.getDisable(), oldRole.getDisable());
         //五个字段其中一个出现修改则进行更改
         if (StrUtil.equals(newRole.getRoleName(), oldRole.getRoleName())
                 || StrUtil.equals(newRole.getRoleLabel(), oldRole.getRoleLabel())
                 || menuUpdate || resourceUpdate || disableUpdate) {
             baseMapper.updateById(newRole);
         }
-        //当接口权限出现变更，或者角色从启用-->禁用，需要把对应的用户强制下线
+        //当接口权限出现变更，或者角色状态变更，需要把对应的用户强制下线
         if (resourceUpdate || disableUpdate) {
             //找到当前角色的用户
             List<UserAuthEntity> userAuthEntities = userAuthMapper.selectUsrByRoleId(newRole.getId());
