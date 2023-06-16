@@ -107,7 +107,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             //强制下线该用户
             UserUtil.logout(userIdList);
             //角色接口权限缓存删除
-            if (resourceUpdate) systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(updateRoleReq.getId()));
+            if (resourceUpdate) systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(oldRole.getRoleLabel()));
             //用户角色缓存删除
             if (disableUpdate) systemAuthService.deleteUserRoleCache(userIdList);
         }
@@ -115,6 +115,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     @Override
     public void deleteRoleById(Long roleId) {
+        //找到现有角色数据
+        RoleEntity oldRole = baseMapper.selectById(roleId);
+        if (oldRole == null) {
+            throw ErrorCodeEnum.ROLE_DATA_IS_NOT_EXIST.buildException();
+        }
         //查询当前角色下是否存在用户
         List<UserAuthEntity> userAuthEntities = userAuthMapper.selectUsrByRoleId(roleId);
         if (CollUtil.isNotEmpty(userAuthEntities)) {
@@ -122,7 +127,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         }
         baseMapper.deleteById(roleId);
         //角色接口权限缓存删除
-        systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(roleId));
+        systemAuthService.deleteRolePermissionCache(CollUtil.newArrayList(oldRole.getRoleLabel()));
     }
 
     @Override

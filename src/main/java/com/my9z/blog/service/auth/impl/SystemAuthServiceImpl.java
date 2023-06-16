@@ -60,15 +60,15 @@ public class SystemAuthServiceImpl implements SystemAuthService {
     }
 
     @Override
-    public void deleteRolePermissionCache(Collection<Long> roleIdColl) {
-        if (CollUtil.isEmpty(roleIdColl)) return;
+    public void deleteRolePermissionCache(Collection<String> roleLabelColl) {
+        if (CollUtil.isEmpty(roleLabelColl)) return;
         String rolePermissionKey = RedisKeyConstant.getRoleAuthKey();
-        RMap<Long, List<String>> rolePermissionCache = redissonClient.getMap(rolePermissionKey);
-        rolePermissionCache.fastRemove(roleIdColl.toArray(new Long[0]));
+        RMap<String, List<String>> rolePermissionCache = redissonClient.getMap(rolePermissionKey);
+        rolePermissionCache.fastRemove(roleLabelColl.toArray(new String[0]));
     }
 
     @Override
-    public List<String> selectUserRoleLabelFromCache(Long userId) {
+    public RList<String> selectUserRoleLabelFromCache(Long userId) {
         if (userId == null) return null;
         String userRoleKey = RedisKeyConstant.getUserRoleKey(userId);
         return redissonClient.getList(userRoleKey);
@@ -97,7 +97,7 @@ public class SystemAuthServiceImpl implements SystemAuthService {
         //查询角色接口权限的map缓存
         String rolePermissionKey = RedisKeyConstant.getRoleAuthKey();
         RMap<String, List<String>> rolePermissionCache = redissonClient.getMap(rolePermissionKey);
-        if (CollUtil.isEmpty(rolePermissionCache)) {
+        if (!rolePermissionCache.isExists()) {
             throw ErrorCodeEnum.ROLE_CACHE_IS_ERROR.buildException();
         }
         //统计缓存返回的接口权限
@@ -139,16 +139,16 @@ public class SystemAuthServiceImpl implements SystemAuthService {
      * @param roleAuthDtoList 用户权限对象
      */
     private void refreshRolePermissionCache(List<RoleAuthDto> roleAuthDtoList) {
-        Map<Long, List<String>> roleResourceAuth = new HashMap<>();
+        Map<String, List<String>> roleResourceAuth = new HashMap<>();
         for (RoleAuthDto roleAuthDto : roleAuthDtoList) {
             if (CollUtil.isEmpty(roleAuthDto.getPermissionList())) {
-                roleResourceAuth.put(roleAuthDto.getId(), new ArrayList<>());
+                roleResourceAuth.put(roleAuthDto.getRoleLabel(), new ArrayList<>());
             } else {
-                roleResourceAuth.put(roleAuthDto.getId(), roleAuthDto.getPermissionList());
+                roleResourceAuth.put(roleAuthDto.getRoleLabel(), roleAuthDto.getPermissionList());
             }
         }
         String rolePermissionKey = RedisKeyConstant.getRoleAuthKey();
-        RMap<Long, List<String>> rolePermissionCache = redissonClient.getMap(rolePermissionKey);
+        RMap<String, List<String>> rolePermissionCache = redissonClient.getMap(rolePermissionKey);
         rolePermissionCache.putAll(roleResourceAuth);
     }
 

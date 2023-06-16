@@ -1,5 +1,7 @@
 package com.my9z.blog.service.auth;
 
+import org.redisson.api.RList;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -23,11 +25,11 @@ public interface SystemAuthService {
     void deleteUserRoleCache(Collection<Long> userIdColl);
 
     /**
-     * 删除指定角色id的接口权限缓存
+     * 删除指定角色标识的接口权限缓存
      *
-     * @param roleIdColl 角色id集合
+     * @param roleLabelColl 角色标识集合
      */
-    void deleteRolePermissionCache(Collection<Long> roleIdColl);
+    void deleteRolePermissionCache(Collection<String> roleLabelColl);
 
     /**
      * 从缓存查询用户的角色类型
@@ -35,7 +37,7 @@ public interface SystemAuthService {
      * @param userId 用户id
      * @return 角色类型
      */
-    List<String> selectUserRoleLabelFromCache(Long userId);
+    RList<String> selectUserRoleLabelFromCache(Long userId);
 
 
     /**

@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.my9z.blog.service.auth.SystemAuthService;
+import org.redisson.api.RList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,9 +51,9 @@ public class UserAuthConfig implements StpInterface {
     public List<String> getRoleList(Object loginId, String loginType) {
         Long userId = getUserId(loginId);
         //从缓存中查寻该用户角色
-        List<String> userRoleCache = systemAuthService.selectUserRoleLabelFromCache(userId);
-        //userRoleCache不为空就代表命中缓存，就算userRoleCache的size为空
-        if (userRoleCache != null) return userRoleCache;
+        RList<String> userRoleCache = systemAuthService.selectUserRoleLabelFromCache(userId);
+        //命中缓存直接返回
+        if (userRoleCache.isExists()) return userRoleCache;
         //缓存中没有，数据库中查询,并存储redis
         return systemAuthService.selectUserRoleLabelAndSaveCache(userId);
     }
